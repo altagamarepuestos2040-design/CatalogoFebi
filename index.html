@@ -732,6 +732,25 @@ select:focus{border-color:#CC0000}
   transition:all .2s;margin-top:10px;margin-left:8px;
 }
 .dash-reject-btn:hover{ background:#FEE2E2; }
+/* ── PRÓXIMOS INGRESOS ─────────────────────────────────────────────────── */
+.pi-section{background:#fff;border-bottom:3px solid #CC0000;padding:0 0 0 0;margin-bottom:0}
+.pi-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px 14px;flex-wrap:wrap;gap:10px}
+.pi-title{font-size:18px;font-weight:900;color:#CC0000;display:flex;align-items:center;gap:10px}
+.pi-badge{background:#CC0000;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.pi-track{display:flex;gap:14px;overflow-x:auto;padding:0 24px 18px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.pi-track::-webkit-scrollbar{height:4px}.pi-track::-webkit-scrollbar-track{background:#F3F4F6}.pi-track::-webkit-scrollbar-thumb{background:#CC0000;border-radius:4px}
+.pi-card{flex:0 0 160px;border:1.5px solid #F3F4F6;border-radius:12px;overflow:hidden;background:#FAFAFA;transition:box-shadow .2s,transform .2s;cursor:default}
+.pi-card:hover{box-shadow:0 4px 18px rgba(204,0,0,.15);transform:translateY(-2px)}
+.pi-card-img{width:100%;height:120px;object-fit:contain;background:#fff;padding:8px;border-bottom:1px solid #F3F4F6}
+.pi-card-img-err{width:100%;height:120px;background:#FFF0F0;display:flex;align-items:center;justify-content:center;font-size:28px}
+.pi-card-body{padding:8px 10px 10px}
+.pi-card-num{font-family:monospace;font-size:12px;font-weight:700;color:#CC0000}
+.pi-card-desc{font-size:11px;color:#374151;margin-top:3px;line-height:1.35;min-height:30px}
+.pi-card-tag{display:inline-block;margin-top:6px;font-size:10px;font-weight:700;background:#FEF2F2;color:#CC0000;border:1px solid #FECACA;border-radius:20px;padding:2px 8px}
+.pi-nav{display:flex;gap:6px}
+.pi-nav button{border:none;background:#CC0000;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:.85}
+.pi-nav button:hover{opacity:1}
+
 .dash-edit-btn{
   background:#EFF6FF;color:#1D4ED8;border:1.5px solid #BFDBFE;padding:10px 16px;
   border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;
@@ -1111,6 +1130,22 @@ select:focus{border-color:#CC0000}
     </select>
     <button id="btn-filtro-fav" onclick="setFiltroFav()" style="padding:6px 14px;border:1.5px solid #E5E7EB;border-radius:20px;background:#fff;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;display:none;gap:5px;align-items:center" title="Ver solo mis favoritos">&#10084;&#65039; Mis favoritos</button>
   </div>
+      <!-- ── PRÓXIMOS INGRESOS ───────────────────────────────────────────────── -->
+    <div class="pi-section" id="pi-section">
+      <div class="pi-header">
+        <div class="pi-title">
+          <img src="Imagenes/logos/febi_logo.png" style="height:22px;object-fit:contain" alt="Febi" onerror="this.style.display='none'">
+          Próximos Ingresos
+          <span class="pi-badge" id="pi-count">0</span>
+        </div>
+        <div class="pi-nav">
+          <button onclick="piScroll(-1)" title="Anterior">&#8592;</button>
+          <button onclick="piScroll(1)" title="Siguiente">&#8594;</button>
+        </div>
+      </div>
+      <div class="pi-track" id="pi-track"></div>
+    </div>
+
   <div class="grid" id="gr"></div>
   <div id="em"><div class="empty-icon">&#128269;</div><h3>No se encontraron art&iacute;culos</h3><p>Prob&aacute; con otro t&eacute;rmino o cambi&aacute; los filtros</p></div>
   <div class="pag" id="pg"></div>
@@ -1756,6 +1791,224 @@ function openZoom(src){
   img.src=src;
   ov.classList.add('show');
 }
+// ── PRÓXIMOS INGRESOS ─────────────────────────────────────────────────────
+var PROXIMOS_INGRESOS = [
+  {id:"183515",desc:"Depósito de expansión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/183515_1.jpg"},
+  {id:"184850",desc:"Kit de junta homocinética",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/184850_1.jpg"},
+  {id:"185384",desc:"Kit de junta homocinética",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/185384_1.jpg"},
+  {id:"185955",desc:"Sensor de presión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/185955_1.jpg"},
+  {id:"180085",desc:"Filtro hidráulico",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/180085_1.jpg"},
+  {id:"183913",desc:"Carcasa de filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/183913_1.jpg"},
+  {id:"184369",desc:"Filtro de aire",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/184369_1.jpg"},
+  {id:"197766",desc:"Aceite de caja de cambios",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/197766_1.jpg"},
+  {id:"43797",desc:"Kit de collarín de eje",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/43797_1.jpg"},
+  {id:"38768",desc:"Sensor de árbol de levas",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/38768_1.jpg"},
+  {id:"109100",desc:"Juego de filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/109100_1.jpg"},
+  {id:"171465",desc:"Disco de freno",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171465_1.jpg"},
+  {id:"171767",desc:"Kit de servicio de aceite y filtro de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171767_1.jpg"},
+  {id:"171884",desc:"Sensor de presión de combustible",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171884_1.jpg"},
+  {id:"172630",desc:"Juego de filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/172630_1.jpg"},
+  {id:"175535",desc:"Filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/175535_1.jpg"},
+  {id:"186427",desc:"Kit de junta homocinética",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/186427_1.jpg"},
+  {id:"196273",desc:"Enfriador de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/196273_1.jpg"},
+  {id:"199309",desc:"Sensor de presión de combustible",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/199309_1.jpg"},
+  {id:"1000543",desc:"Sensor de nivel de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/1000543_1.jpg"},
+  {id:"108280",desc:"Filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/108280_1.jpg"},
+  {id:"100376",desc:"Filtro de aire",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100376_1.jpg"},
+  {id:"178421",desc:"Cárter de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/178421_1.jpg"},
+  {id:"106897",desc:"Filtro de aire",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/106897_1.jpg"},
+  {id:"107823",desc:"Juego de filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/107823_1.jpg"},
+  {id:"109020",desc:"Filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/109020_1.jpg"},
+  {id:"109151",desc:"Kit de junta homocinética",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/109151_1.jpg"},
+  {id:"170883",desc:"Juego de filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/170883_1.jpg"},
+  {id:"171254",desc:"Sensor de presión de combustible",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171254_1.jpg"},
+  {id:"171617",desc:"Cárter de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171617_1.jpg"},
+  {id:"171750",desc:"Kit de servicio de aceite y filtro de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171750_1.jpg"},
+  {id:"172481",desc:"Soporte de goma",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/172481_1.jpg"},
+  {id:"176675",desc:"Filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/176675_1.jpg"},
+  {id:"104788",desc:"Filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/104788_1.jpg"},
+  {id:"105817",desc:"Filtro de habitáculo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/105817_1.jpg"},
+  {id:"101330",desc:"Filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/101330_1.jpg"},
+  {id:"102604",desc:"Tapa de válvulas",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102604_1.jpg"},
+  {id:"103649",desc:"Cilindro maestro de embrague",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/103649_1.jpg"},
+  {id:"103651",desc:"Interruptor de luz de freno",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/103651_1.jpg"},
+  {id:"109170",desc:"Carcasa de filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/109170_1.jpg"},
+  {id:"100249",desc:"Juego de filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100249_1.jpg"},
+  {id:"100564",desc:"Enfriador de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100564_1.jpg"},
+  {id:"101448",desc:"Filtro de aire",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/101448_1.jpg"},
+  {id:"39340",desc:"Depósito de expansión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/39340_1.jpg"},
+  {id:"45443",desc:"Sensor de temperatura de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/45443_1.jpg"},
+  {id:"39138",desc:"Indicador de desgaste",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/39138_1.jpg"},
+  {id:"49649",desc:"Kit de filtro de habitáculo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/49649_1.jpg"},
+  {id:"44382",desc:"Sensor de árbol de levas",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/44382_1.jpg"},
+  {id:"48511",desc:"Filtro de habitáculo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/48511_1.jpg"},
+  {id:"36449",desc:"Aceite de caja automática (ATF)",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/36449_1.jpg"},
+  {id:"37031",desc:"Sensor de presión de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/37031_1.jpg"},
+  {id:"37317",desc:"Sensor de cigüeñal",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/37317_1.jpg"},
+  {id:"27061",desc:"Juego de filtro de aceite de caja",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/27061_1.jpg"},
+  {id:"29449",desc:"Aceite de caja automática (ATF)",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29449_1.jpg"},
+  {id:"29871",desc:"Filtro de habitáculo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29871_1.jpg"},
+  {id:"30533",desc:"Tapón",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30533_1.jpg"},
+  {id:"30642",desc:"Kit de filtro de habitáculo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30642_1.jpg"},
+  {id:"37144",desc:"Junta de tapa de válvulas",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/37144_1.jpg"},
+  {id:"173568",desc:"Indicador de desgaste",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/173568_1.jpg"},
+  {id:"15263",desc:"Retén de eje",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/15263_1.jpg"},
+  {id:"16334",desc:"Juego de pastillas de freno",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/16334_1.jpg"},
+  {id:"19538",desc:"Filtro de habitáculo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/19538_1.jpg"},
+  {id:"196735",desc:"Aceite de caja de cambios",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/196735_1.jpg"},
+  {id:"199277",desc:"Disco de freno",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/199277_1.jpg"},
+  {id:"19186",desc:"Indicador de desgaste",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/19186_1.jpg"},
+  {id:"184978",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/184978_1.jpg"},
+  {id:"188653",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/188653_1.jpg"},
+  {id:"194919",desc:"Convertidor de presión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/194919_1.jpg"},
+  {id:"196564",desc:"Brida de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/196564_1.jpg"},
+  {id:"1003452",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/1003452_1.jpg"},
+  {id:"1004191",desc:"Kit de árbol de equilibrado",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/1004191_1.jpg"},
+  {id:"180693",desc:"Brida de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/180693_1.jpg"},
+  {id:"45436",desc:"Espiral de airbag",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/45436_1.jpg"},
+  {id:"196660",desc:"Espiral de airbag",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/196660_1.jpg"},
+  {id:"173476",desc:"Tubería de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/173476_1.jpg"},
+  {id:"173909",desc:"Piñón de distribución variable",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/173909_1.jpg"},
+  {id:"174236",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/174236_1.jpg"},
+  {id:"174728",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/174728_1.jpg"},
+  {id:"174729",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/174729_1.jpg"},
+  {id:"175484",desc:"Bomba de agua",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/175484_1.jpg"},
+  {id:"180363",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/180363_1.jpg"},
+  {id:"186290",desc:"Bomba de agua",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/186290_1.jpg"},
+  {id:"1001193",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/1001193_1.jpg"},
+  {id:"1003451",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/1003451_1.jpg"},
+  {id:"196660",desc:"Espiral de airbag",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/196660_1.jpg"},
+  {id:"196194",desc:"Carcasa de filtro de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/196194_1.jpg"},
+  {id:"176645",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/176645_1.jpg"},
+  {id:"177075",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/177075_1.jpg"},
+  {id:"178028",desc:"Tapón",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/178028_1.jpg"},
+  {id:"178960",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/178960_1.jpg"},
+  {id:"179617",desc:"Rodamiento",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/179617_1.jpg"},
+  {id:"180856",desc:"Junta axial",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/180856_1.jpg"},
+  {id:"170461",desc:"Polea tensora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/170461_1.jpg"},
+  {id:"184558",desc:"Bomba de agua",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/184558_1.jpg"},
+  {id:"185479",desc:"Junta axial",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/185479_1.jpg"},
+  {id:"185692",desc:"Manguera de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/185692_1.jpg"},
+  {id:"188168",desc:"Tubería de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/188168_1.jpg"},
+  {id:"193743",desc:"Manguera de admisión turbo",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/193743_1.jpg"},
+  {id:"171912",desc:"Termostato",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171912_1.jpg"},
+  {id:"172887",desc:"Manguera de ventilación",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/172887_1.jpg"},
+  {id:"107851",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/107851_1.jpg"},
+  {id:"170256",desc:"Tensor de correa",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/170256_1.jpg"},
+  {id:"171952",desc:"Polea amortiguadora de vibración",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/171952_1.jpg"},
+  {id:"172370",desc:"Kit de apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/172370_1.jpg"},
+  {id:"174316",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/174316_1.jpg"},
+  {id:"175804",desc:"Apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/175804_1.jpg"},
+  {id:"48750",desc:"Tensor de correa",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/48750_1.jpg"},
+  {id:"100590",desc:"Kit soporte central cardan",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100590_1.jpg"},
+  {id:"100616",desc:"Manguera de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100616_1.jpg"},
+  {id:"102152",desc:"Polea tensora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102152_1.jpg"},
+  {id:"102403",desc:"Kit de apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102403_1.jpg"},
+  {id:"102698",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102698_1.jpg"},
+  {id:"103197",desc:"Termostato",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/103197_1.jpg"},
+  {id:"103918",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/103918_1.jpg"},
+  {id:"100924",desc:"Apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100924_1.jpg"},
+  {id:"102341",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102341_1.jpg"},
+  {id:"102601",desc:"Tensor de correa",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102601_1.jpg"},
+  {id:"102834",desc:"Kit de rodamiento de rueda",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102834_1.jpg"},
+  {id:"103112",desc:"Tope de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/103112_1.jpg"},
+  {id:"103923",desc:"Tapón de llenado de aceite",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/103923_1.jpg"},
+  {id:"104886",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/104886_1.jpg"},
+  {id:"107852",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/107852_1.jpg"},
+  {id:"104777",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/104777_1.jpg"},
+  {id:"43753",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/43753_1.jpg"},
+  {id:"43790",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/43790_1.jpg"},
+  {id:"44283",desc:"Junta axial",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/44283_1.jpg"},
+  {id:"45192",desc:"Válvula de ventilación",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/45192_1.jpg"},
+  {id:"45610",desc:"Junta axial",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/45610_1.jpg"},
+  {id:"47196",desc:"Retén de cigüeñal",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/47196_1.jpg"},
+  {id:"47324",desc:"Kit de apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/47324_1.jpg"},
+  {id:"48386",desc:"Kit de distribución (cadena)",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/48386_1.jpg"},
+  {id:"44985",desc:"Tubería de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/44985_1.jpg"},
+  {id:"45380",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/45380_1.jpg"},
+  {id:"48729",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/48729_1.jpg"},
+  {id:"49236",desc:"Correa de accesorios",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/49236_1.jpg"},
+  {id:"100548",desc:"Tubería de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/100548_1.jpg"},
+  {id:"39053",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/39053_1.jpg"},
+  {id:"39261",desc:"Pistón de gas",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/39261_1.jpg"},
+  {id:"39979",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/39979_1.jpg"},
+  {id:"39980",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/39980_1.jpg"},
+  {id:"37181",desc:"Termostato",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/37181_1.jpg"},
+  {id:"38054",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/38054_1.jpg"},
+  {id:"40496",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/40496_1.jpg"},
+  {id:"44260",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/44260_1.jpg"},
+  {id:"40591",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/40591_1.jpg"},
+  {id:"40682",desc:"Kit de rodamiento de rueda",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/40682_1.jpg"},
+  {id:"36477",desc:"Apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/36477_1.jpg"},
+  {id:"33716",desc:"Tensor de correa",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/33716_1.jpg"},
+  {id:"36302",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/36302_1.jpg"},
+  {id:"38056",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/38056_1.jpg"},
+  {id:"38534",desc:"Soporte de caja de cambios",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/38534_1.jpg"},
+  {id:"36962",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/36962_1.jpg"},
+  {id:"29024",desc:"Correa poli-V",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29024_1.jpg"},
+  {id:"29125",desc:"Correa poli-V",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29125_1.jpg"},
+  {id:"29604",desc:"Extremo de barra de dirección",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29604_1.jpg"},
+  {id:"29605",desc:"Extremo de barra de dirección",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29605_1.jpg"},
+  {id:"29855",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29855_1.jpg"},
+  {id:"30007",desc:"Soporte de caja de cambios",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30007_1.jpg"},
+  {id:"31774",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/31774_1.jpg"},
+  {id:"32248",desc:"Tensor de correa",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/32248_1.jpg"},
+  {id:"32531",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/32531_1.jpg"},
+  {id:"30008",desc:"Soporte de caja de cambios",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30008_1.jpg"},
+  {id:"31334",desc:"Rótula de dirección",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/31334_1.jpg"},
+  {id:"36057",desc:"Polea tensora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/36057_1.jpg"},
+  {id:"36301",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/36301_1.jpg"},
+  {id:"28369",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/28369_1.jpg"},
+  {id:"31755",desc:"Buje de brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/31755_1.jpg"},
+  {id:"23031",desc:"Junta axial",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/23031_1.jpg"},
+  {id:"29504",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/29504_1.jpg"},
+  {id:"30010",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30010_1.jpg"},
+  {id:"30011",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30011_1.jpg"},
+  {id:"30150",desc:"Polea libre de alternador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/30150_1.jpg"},
+  {id:"22108",desc:"Kit de apoyo de amortiguador",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/22108_1.jpg"},
+  {id:"22348",desc:"Polea tensora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/22348_1.jpg"},
+  {id:"22756",desc:"Buje de barra de dirección",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/22756_1.jpg"},
+  {id:"24026",desc:"Bomba de agua",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/24026_1.jpg"},
+  {id:"26482",desc:"Soporte de motor",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/26482_1.jpg"},
+  {id:"26639",desc:"Brida de refrigerante",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/26639_1.jpg"},
+  {id:"11028",desc:"Kit de distribución (correa)",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/11028_1.jpg"},
+  {id:"27160",desc:"Buje de barra estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/27160_1.jpg"},
+  {id:"27897",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/27897_1.jpg"},
+  {id:"28368",desc:"Brazo de suspensión",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/28368_1.jpg"},
+  {id:"102247",desc:"Barra de dirección",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102247_1.jpg"},
+  {id:"19518",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/19518_1.jpg"},
+  {id:"19667",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/19667_1.jpg"},
+  {id:"19668",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/19668_1.jpg"},
+  {id:"102246",desc:"Barra de dirección",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/102246_1.jpg"},
+  {id:"38861",desc:"Filtro de aire",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/38861_1.jpg"},
+  {id:"104886",desc:"Bieleta de estabilizadora",img:"https://cdn.partsfinder.bilsteingroup.com/pf-article-list/1/104886_1.jpg"}
+];
+
+(function(){
+  var track = document.getElementById('pi-track');
+  var badge = document.getElementById('pi-count');
+  if(!track) return;
+  if(badge) badge.textContent = PROXIMOS_INGRESOS.length;
+  PROXIMOS_INGRESOS.forEach(function(p){
+    var card = document.createElement('div');
+    card.className = 'pi-card';
+    card.innerHTML = '<img class="pi-card-img" src="'+p.img+'" alt="'+p.id+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+      +'<div class="pi-card-img-err" style="display:none">&#128230;</div>'
+      +'<div class="pi-card-body">'
+        +'<div class="pi-card-num">'+p.id+'</div>'
+        +'<div class="pi-card-desc">'+p.desc+'</div>'
+        +'<span class="pi-card-tag">Próximo ingreso</span>'
+      +'</div>';
+    track.appendChild(card);
+  });
+})();
+
+function piScroll(dir){
+  var t = document.getElementById('pi-track');
+  if(t) t.scrollBy({ left: dir * 540, behavior: 'smooth' });
+}
+
+
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape') document.getElementById('zoom-overlay').classList.remove('show');
 });
