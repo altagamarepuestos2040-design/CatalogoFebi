@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -2183,8 +2183,8 @@ window.addEventListener("DOMContentLoaded", function(){
 
   var _vc = '?v=' + Date.now();
   Promise.all([
-    fetch('articulos.json' + _vc).then(function(r){ return r.json(); }),
-    fetch('precios.json' + _vc).then(function(r){ return r.json(); })
+    fetch('https://altagamarepuestos2040-design.github.io/CatalogoAltaGama/articulos.json' + _vc).then(function(r){ return r.json(); }),
+    fetch('https://altagamarepuestos2040-design.github.io/CatalogoAltaGama/precios.json' + _vc).then(function(r){ return r.json(); })
   ]).then(function(results){
     DATA = results[0];
     PRECIOS_BASE = results[1];
