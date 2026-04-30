@@ -39,11 +39,9 @@ img{display:block;max-width:100%}
   display:flex;align-items:center;
   margin-right:40px;flex-shrink:0;
 }
-.nav-logo img{
-  height:46px;object-fit:contain;
-  filter:brightness(0) invert(1);
-}
+.nav-logo img{height:46px;object-fit:contain;filter:brightness(0) invert(1)}
 .nav-logo-txt{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;display:none}
+.nav-logo-word{font-size:27px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1;font-family:'Manrope',Arial,sans-serif}
 .nav-links{display:flex;align-items:center;gap:0;flex:1}
 .nav-link{
   padding:0 16px;height:70px;
@@ -337,6 +335,7 @@ footer{background:var(--mid);padding:56px 40px 24px}
 
 .f-logo img{height:36px;filter:brightness(0) invert(1);margin-bottom:16px;object-fit:contain}
 .f-logo-txt{font-size:28px;font-weight:900;color:#fff;margin-bottom:16px;display:none}
+.f-logo-word{font-size:26px;font-weight:900;color:#fff;letter-spacing:-1.5px;margin-bottom:16px;font-family:'Manrope',Arial,sans-serif}
 .f-brand-text{font-size:13px;color:rgba(255,255,255,.4);line-height:1.65;margin-bottom:20px}
 .f-social{display:flex;gap:8px}
 .f-social-btn{
@@ -490,15 +489,13 @@ footer{background:var(--mid);padding:56px 40px 24px}
 <!-- NAV -->
 <nav class="nav">
   <a class="nav-logo" href="#">
-    <img src="https://altagamarepuestos2040-design.github.io/CatalogoAltaGama/Imagenes/logos/febi_logo.png"
-         alt="febi" onerror="this.style.display='none';document.querySelector('.nav-logo-txt').style.display='block'">
-    <div class="nav-logo-txt">febi</div>
+    <span class="nav-logo-word">febi</span>
   </a>
   <div class="nav-links">
     <a class="nav-link" href="https://www.febi.com.ar/catalogo.html">Turismos</a>
     <a class="nav-link" href="https://www.febi.com.ar/catalogo.html">Furgonetas</a>
-    <a class="nav-link" href="https://www.febi.com/es/vehiculos-pesados" target="_blank">Camiones</a>
-    <a class="nav-link" href="https://www.febi.com/es/agricultura" target="_blank">Agricultura</a>
+    <a class="nav-link" href="https://www.febi.com.ar/catalogo.html">Camiones</a>
+    <a class="nav-link" href="https://www.febi.com.ar/catalogo.html">Agricultura</a>
     <a class="nav-link" href="#calidad">Categorías</a>
     <a class="nav-link" href="#porque-febi">Por qué febi</a>
     <a class="nav-link" href="#contacto">Contacto</a>
@@ -1006,11 +1003,7 @@ footer{background:var(--mid);padding:56px 40px 24px}
 <footer>
   <div class="footer-grid">
     <div>
-      <div class="f-logo">
-        <img src="https://altagamarepuestos2040-design.github.io/CatalogoAltaGama/Imagenes/logos/febi_logo.png"
-             alt="febi" onerror="this.style.display='none';document.querySelector('.f-logo-txt').style.display='block'">
-        <div class="f-logo-txt">febi</div>
-      </div>
+      <div class="f-logo-word">febi</div>
       <p class="f-brand-text">Distribuidor oficial de febi Bilstein en Argentina. Repuestos de calidad equivalente a OE para turismos, camiones, furgonetas y agricultura. Parte del Bilstein Group desde 1844.</p>
       <div class="f-follow">
         <div class="f-follow-label">Síguenos en</div>
@@ -1148,7 +1141,7 @@ function enviarCotiz(){
     + '\n*Repuesto:* ' + rep
     + (wa ? '\n*Mi WhatsApp:* ' + wa : '');
   // ⚠ Reemplazar XXXXXXXX con el número de WhatsApp de Alta Gama (sin + ni espacios)
-  window.open('https://wa.me/5491100000000?text=' + encodeURIComponent(msg), '_blank');
+  window.open('https://wa.me/541162770520?text=' + encodeURIComponent(msg), '_blank');
   document.getElementById('cotiz-form-inner').style.display='none';
   document.getElementById('cotiz-success').style.display='block';
 }
