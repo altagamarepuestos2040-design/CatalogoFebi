@@ -941,6 +941,168 @@ select:focus{border-color:#CC0000}
 </head>
 <body>
 
+<!-- ═══════════════════════════════════════════════════
+     FEBI LANDING INTRO
+════════════════════════════════════════════════════ -->
+<div id="febi-landing">
+  <div class="fl-bg"></div>
+  <div class="fl-content">
+
+    <!-- Logo -->
+    <div class="fl-logo-wrap">
+      <img src="Imagenes/logos/febi_logo.png" alt="febi" class="fl-logo" onerror="this.style.display='none';document.getElementById('fl-logo-txt').style.display='block'">
+      <div id="fl-logo-txt" style="display:none;font-size:42px;font-weight:900;color:#fff;letter-spacing:-1px">febi</div>
+    </div>
+
+    <p class="fl-sub">bilstein group</p>
+    <h1 class="fl-title">Tu solución N°1 en repuestos<br>para la movilidad de hoy y del futuro</h1>
+    <p class="fl-desc">Calidad alemana. Ingeniería de precisión. Más de 175 años de experiencia en la industria automotriz.</p>
+
+    <!-- Stats -->
+    <div class="fl-stats">
+      <div class="fl-stat">
+        <span class="fl-stat-num">175<span class="fl-stat-plus">+</span></span>
+        <span class="fl-stat-label">Años de<br>experiencia</span>
+      </div>
+      <div class="fl-stat">
+        <span class="fl-stat-num">64K</span>
+        <span class="fl-stat-label">Referencias<br>disponibles</span>
+      </div>
+      <div class="fl-stat">
+        <span class="fl-stat-num">70<span class="fl-stat-plus">+</span></span>
+        <span class="fl-stat-label">Máquinas de<br>última generación</span>
+      </div>
+      <div class="fl-stat">
+        <span class="fl-stat-num">10K<span class="fl-stat-plus">m²</span></span>
+        <span class="fl-stat-label">Planta de<br>producción</span>
+      </div>
+    </div>
+
+    <!-- Quality pills -->
+    <div class="fl-pills">
+      <div class="fl-pill">&#9989; Calidad OE equivalente</div>
+      <div class="fl-pill">&#127465;&#127466; Fabricado en Alemania</div>
+      <div class="fl-pill">&#128269; Garantía de ajuste perfecto</div>
+      <div class="fl-pill">&#128222; Soporte técnico</div>
+    </div>
+
+    <!-- CTA -->
+    <button class="fl-btn" onclick="febiEntrar()">
+      Ver Catálogo Argentina &nbsp;&#8594;
+    </button>
+
+    <p class="fl-footer-note">Alta Gama Repuestos · Distribuidores oficiales febi en Argentina</p>
+  </div>
+</div>
+
+<style>
+#febi-landing{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  overflow-y:auto;
+  transition:opacity .7s ease;
+}
+.fl-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0a0a0a 0%,#1a0000 40%,#2d0000 70%,#111 100%);
+  z-index:0;
+}
+.fl-bg::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 30%, rgba(204,0,0,.18) 0%, transparent 70%);
+}
+.fl-content{
+  position:relative;z-index:1;
+  max-width:720px;width:100%;
+  padding:48px 24px 40px;
+  text-align:center;
+}
+.fl-logo-wrap{ margin-bottom:8px; }
+.fl-logo{ height:52px;filter:brightness(0) invert(1);object-fit:contain; }
+.fl-sub{
+  font-size:11px;font-weight:700;letter-spacing:.25em;
+  text-transform:uppercase;color:rgba(255,255,255,.45);
+  margin-bottom:32px;
+}
+.fl-title{
+  font-size:clamp(22px,5vw,38px);font-weight:900;
+  color:#fff;line-height:1.15;margin-bottom:14px;
+  letter-spacing:-.5px;
+}
+.fl-desc{
+  font-size:15px;color:rgba(255,255,255,.65);
+  line-height:1.6;max-width:520px;margin:0 auto 36px;
+}
+.fl-stats{
+  display:flex;gap:0;justify-content:center;
+  border:1px solid rgba(255,255,255,.1);border-radius:14px;
+  overflow:hidden;margin-bottom:28px;
+  background:rgba(255,255,255,.04);
+}
+.fl-stat{
+  flex:1;padding:20px 12px;
+  border-right:1px solid rgba(255,255,255,.08);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.fl-stat:last-child{border-right:none;}
+.fl-stat-num{
+  font-size:clamp(22px,4vw,32px);font-weight:900;
+  color:#CC0000;line-height:1;
+}
+.fl-stat-plus{ font-size:.6em;vertical-align:super;color:#CC0000; }
+.fl-stat-label{
+  font-size:11px;color:rgba(255,255,255,.5);
+  line-height:1.4;text-align:center;
+}
+.fl-pills{
+  display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;margin-bottom:36px;
+}
+.fl-pill{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:100px;padding:7px 14px;
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.8);
+}
+.fl-btn{
+  background:#CC0000;color:#fff;
+  border:none;border-radius:10px;
+  padding:16px 40px;font-size:16px;font-weight:700;
+  cursor:pointer;letter-spacing:.02em;
+  transition:background .2s,transform .1s,box-shadow .2s;
+  box-shadow:0 4px 24px rgba(204,0,0,.4);
+  margin-bottom:24px;
+}
+.fl-btn:hover{ background:#a80000;transform:translateY(-1px);box-shadow:0 6px 30px rgba(204,0,0,.5); }
+.fl-btn:active{ transform:translateY(0); }
+.fl-footer-note{
+  font-size:11px;color:rgba(255,255,255,.3);
+  letter-spacing:.05em;
+}
+@media(max-width:600px){
+  .fl-stats{ flex-wrap:wrap; }
+  .fl-stat{ flex:1 1 45%;border-right:none;border-bottom:1px solid rgba(255,255,255,.08); }
+  .fl-stat:nth-child(odd){ border-right:1px solid rgba(255,255,255,.08); }
+  .fl-stat:last-child,.fl-stat:nth-last-child(2):nth-child(odd){ border-bottom:none; }
+}
+</style>
+
+<script>
+(function(){
+  // Si ya entró antes en esta sesión, saltear landing
+  if(sessionStorage.getItem('febi_entered')==='1'){
+    document.getElementById('febi-landing').style.display='none';
+  }
+})();
+function febiEntrar(){
+  var el=document.getElementById('febi-landing');
+  el.style.opacity='0';
+  sessionStorage.setItem('febi_entered','1');
+  setTimeout(function(){ el.style.display='none'; },700);
+}
+</script>
+
 <div class="header">
   <div class="header-top">
     <div class="hinner">
