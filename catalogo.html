@@ -291,7 +291,7 @@ button{cursor:pointer;font-family:inherit}
 .product-card:hover{
   border-color:rgba(204,0,0,0.4);
   transform:translateY(-4px);
-  box-shadow:0 16px 48px rgba(0,0,0,0.5);
+  box-shadow:0 12px 32px rgba(0,0,0,0.1);
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .product-img-wrap{
@@ -1136,11 +1136,11 @@ function renderProducts() {
     const imgPath = p.img ? p.img : null;
     const price = p.precio ? formatPrice(p.precio) : 'Consultar';
     return `
-    <div class="product-card" onclick="openModal(${JSON.stringify(p).replace(/"/g,'&quot;')})" style="animation-delay:${(i % PAGE_SIZE) * 30}ms">
+    <div class="product-card" onclick="openModal(filteredProducts[${start + i}])" style="animation-delay:${(i % PAGE_SIZE) * 30}ms">
       <div class="product-img-wrap">
         ${imgPath
-          ? `<img src="${imgPath}" alt="${p.desc}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=product-img-placeholder><svg viewBox=\\"0 0 24 24\\" fill=\\"none\\" stroke=\\"currentColor\\" stroke-width=\\"1\\"><rect x=\\"2\\" y=\\"3\\" width=\\"20\\" height=\\"14\\" rx=\\"2\\"/><line x1=\\"8\\" y1=\\"21\\" x2=\\"16\\" y2=\\"21\\"/><line x1=\\"12\\" y1=\\"17\\" x2=\\"12\\" y2=\\"21\\"/></svg><span>Sin imagen</span></div>'">`
-          : `<div class="product-img-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span>${p.cat}</span></div>`
+          ? `<img src="${imgPath}" alt="${p.desc}" loading="lazy" onerror="this.style.display='none'">`
+          : `<div class="product-img-placeholder"><span style="font-size:32px;opacity:.3">📦</span><span>${p.cat}</span></div>`
         }
       </div>
       <div class="product-body">
