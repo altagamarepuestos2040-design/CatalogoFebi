@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>febi Argentina — Repuestos de Ingeniería Alemana</title>
+<meta name="description" content="febi en Argentina. Repuestos de precisión europea para Audi, VW, BMW, Mercedes-Benz, Toyota y más. Distribución oficial.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:#FFFFFF;--off:#F7F7F8;--g50:#F0F0F2;--g100:#E8E8EC;--g200:#D6D6DB;
+  --g400:#9A9AA4;--g500:#6B6B75;--g700:#3A3A42;--g800:#1A1A1F;--black:#0A0A0A;
+  --red:#CC0000;--red-d:#A80000;--red-soft:#FFE5E5;--red-glow:rgba(204,0,0,.18);
+  --line:#EAEAEE;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;background:var(--white);color:var(--g800);line-height:1.6;overflow-x:hidden;font-size:16px}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+img{max-width:100%;display:block}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--g50)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .3s,border-color .3s,box-shadow .3s;border-bottom:1px solid transparent}
+.nav.past{background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border-color:var(--line);box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.ni{max-width:1360px;margin:0 auto;padding:0 32px;height:72px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-box{background:var(--red);padding:8px 14px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:transform .25s}
+.logo-box:hover{transform:scale(1.05)}
+.logo-box img{height:34px;width:auto;display:block}
+.nm{display:flex;align-items:center;gap:30px}
+.nm a{font-size:14px;font-weight:500;color:var(--g700);transition:color .2s}
+.nm a:hover{color:var(--red)}
+.ne{display:flex;align-items:center;gap:10px}
+.bg{font-size:13px;font-weight:600;padding:9px 20px;border-radius:7px;border:1px solid var(--g200);color:var(--g700);background:none;transition:all .2s}
+.bg:hover{border-color:var(--red);color:var(--red)}
+.br{font-size:13px;font-weight:700;padding:9px 22px;border-radius:7px;border:none;background:var(--red);color:#fff;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.br:hover{background:var(--red-d);transform:translateY(-1px);box-shadow:0 6px 14px var(--red-glow)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:130px 32px 80px;position:relative;overflow:hidden;
+  background:var(--white);
+}
+.hero-bg-shape{position:absolute;top:0;right:0;width:55%;height:100%;background:linear-gradient(135deg,#FFE5E5 0%,#FFFFFF 100%);clip-path:polygon(20% 0,100% 0,100% 100%,0 100%);z-index:0}
+.hero-bg-shape::before{content:'';position:absolute;top:0;right:0;width:100%;height:100%;background:linear-gradient(135deg,var(--red) 0%,transparent 65%);opacity:.05}
+.hero-grid{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:linear-gradient(rgba(0,0,0,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.025) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to right,black 30%,transparent 80%)}
+.hero-in{position:relative;z-index:3;max-width:1360px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center}
+.h-tag{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--red-soft);background:var(--red-soft);color:var(--red);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:20px;margin-bottom:28px}
+.h-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}55%{opacity:.3;transform:scale(1.4)}}
+.hero h1{font-size:clamp(46px,6.5vw,84px);font-weight:900;letter-spacing:-3.5px;line-height:.95;margin-bottom:28px;color:var(--g800)}
+.hero h1 span{color:var(--red)}
+.h-sub{font-size:17px;color:var(--g500);line-height:1.75;max-width:500px;margin-bottom:44px}
+.h-act{display:flex;gap:13px;flex-wrap:wrap;margin-bottom:60px}
+.bm{display:inline-flex;align-items:center;gap:9px;background:var(--red);color:#fff;font-size:14px;font-weight:700;padding:15px 30px;border-radius:8px;border:none;transition:all .25s}
+.bm:hover{background:var(--red-d);transform:translateY(-2px);box-shadow:0 12px 28px var(--red-glow)}
+.bo{display:inline-flex;align-items:center;gap:9px;background:var(--white);color:var(--g800);font-size:14px;font-weight:600;padding:15px 26px;border-radius:8px;border:1px solid var(--g200);transition:all .2s}
+.bo:hover{border-color:var(--g800);transform:translateY(-1px)}
+.h-nums{display:flex;gap:36px;padding-top:28px;border-top:1px solid var(--line)}
+.h-num strong{display:block;font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--g800)}
+.h-num small{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--g500);margin-top:2px;display:block}
+
+/* Hero img frame (image 1) */
+.h-imgframe{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#FFE5E5 0%,#FFB3B3 100%);aspect-ratio:4/5;box-shadow:0 24px 60px rgba(204,0,0,.15),0 0 0 1px rgba(204,0,0,.08)}
+.h-imgframe img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease}
+.h-imgframe:hover img{transform:scale(1.04)}
+.h-imgframe::after{content:'';position:absolute;inset:0;background:linear-gradient(225deg,transparent 60%,rgba(204,0,0,.12) 100%);pointer-events:none}
+.h-imgframe-badge{position:absolute;top:20px;left:20px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid var(--g100);padding:7px 14px;border-radius:99px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);z-index:2}
+
+/* ── TICKER ── */
+.ticker{background:var(--red);padding:13px 0;overflow:hidden}
+.tt{display:flex;animation:tkr 50s linear infinite;width:max-content}
+.tt:hover{animation-play-state:paused}
+.ti{padding:0 36px;font-size:12px;font-weight:700;color:#fff;opacity:.95;white-space:nowrap;letter-spacing:.4px}
+.ti b{opacity:.45;margin-left:32px}
+@keyframes tkr{to{transform:translateX(-50%)}}
+
+/* ── MARCAS COMPATIBLES ── */
+.brands{background:var(--off);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:64px 32px}
+.bw{max-width:1360px;margin:0 auto}
+.b-lbl{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--g500);margin-bottom:28px;text-align:center}
+.b-flow{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.btag{background:var(--white);border:1px solid var(--g100);border-radius:7px;padding:10px 22px;font-size:14px;font-weight:700;color:var(--g700);transition:all .2s}
+.btag:hover{color:var(--red);border-color:var(--red);transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.05)}
+.brands-logo{display:flex;justify-content:center;margin-bottom:18px}
+.brands-logo .lb-pill{background:var(--red);padding:14px 22px;border-radius:10px;display:inline-flex;transition:transform .3s,box-shadow .3s}
+.brands-logo .lb-pill:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 36px var(--red-glow)}
+.brands-logo .lb-pill img{height:42px;width:auto;display:block}
+
+/* ── SECCIÓN GENÉRICA ── */
+.s{padding:104px 32px;max-width:1360px;margin:0 auto}
+.lbl{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+.ttl{font-size:clamp(30px,3.6vw,50px);font-weight:900;letter-spacing:-1.8px;line-height:1.05;margin-bottom:16px;color:var(--g800)}
+.ttl span{color:var(--red)}
+.sub{font-size:16px;color:var(--g500);line-height:1.75;max-width:560px}
+
+/* ── LA MARCA FEBI (reemplaza líneas) ── */
+.brandblock{background:var(--white);padding:104px 32px}
+.brandblock-in{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.bb-img{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(135deg,var(--red) 0%,var(--red-d) 100%);box-shadow:0 30px 80px rgba(204,0,0,.22)}
+.bb-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s ease}
+.bb-img:hover img{transform:scale(1.05) rotate(-1deg)}
+.bb-img::after{content:'';position:absolute;inset:0;background:linear-gradient(225deg,transparent 70%,rgba(0,0,0,.18) 100%);pointer-events:none}
+.bb-pts{display:flex;flex-direction:column;gap:18px;margin-top:32px}
+.bbp{display:flex;align-items:flex-start;gap:14px}
+.bbp-icon{width:32px;height:32px;border-radius:8px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:900}
+.bbp-t{font-size:15px;color:var(--g700);line-height:1.6}
+.bbp-t strong{color:var(--g800);font-weight:800}
+
+/* ── CATEGORÍAS QUE CUBRIMOS ── */
+.cats{background:var(--off);padding:104px 32px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cats-in{max-width:1360px;margin:0 auto}
+.cats-head{text-align:center;margin-bottom:64px}
+.cats-head .ttl{margin:0 auto 16px}
+.cats-head .sub{margin:0 auto}
+.cats-g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.catcard{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1/1;cursor:pointer;background:linear-gradient(135deg,#F7F7F8 0%,#EAEAEE 100%);border:1px solid var(--line);transition:transform .5s cubic-bezier(.34,1.4,.64,1),box-shadow .5s,border-color .3s;transform-style:preserve-3d;perspective:1200px}
+.catcard:hover{transform:translateY(-12px);box-shadow:0 40px 80px rgba(0,0,0,.12),0 0 0 1px var(--red);border-color:var(--red)}
+.catcard-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;padding:18px;transition:transform .8s cubic-bezier(.2,.8,.2,1),filter .5s}
+.catcard:hover .catcard-img{transform:scale(1.08);filter:saturate(1.15) brightness(1.04)}
+.catcard-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,rgba(0,0,0,.15) 50%,transparent 100%);transition:opacity .4s}
+.catcard:hover .catcard-grad{opacity:.85}
+.catcard-redshine{position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(204,0,0,.35) 100%);opacity:0;transition:opacity .4s;mix-blend-mode:multiply}
+.catcard:hover .catcard-redshine{opacity:1}
+.catcard-info{position:absolute;left:0;right:0;bottom:0;padding:28px;z-index:2;color:#fff}
+.catcard-num{font-size:11px;font-weight:800;letter-spacing:2.5px;color:rgba(255,255,255,.7);margin-bottom:8px}
+.catcard-name{font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:6px;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.catcard-desc{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;line-height:1.45;max-width:280px;opacity:0;transform:translateY(8px);transition:opacity .35s ease,transform .35s ease}
+.catcard:hover .catcard-desc{opacity:1;transform:translateY(0)}
+.catcard-arrow{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:var(--red);transform:scale(0) rotate(-45deg);transition:transform .35s cubic-bezier(.34,1.4,.64,1);z-index:3}
+.catcard:hover .catcard-arrow{transform:scale(1) rotate(0)}
+
+/* ── POR QUÉ FEBI (rojo full-bleed) ── */
+.why-wrap{position:relative;overflow:hidden;background:var(--red)}
+.why-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.12) 0%,transparent 60%),radial-gradient(circle at 10% 90%,rgba(0,0,0,.18) 0%,transparent 50%)}
+.why-wrap::after{content:'';position:absolute;top:50%;right:-8%;transform:translateY(-50%);width:520px;height:520px;background:url('assets/febi-logo.svg') no-repeat center/contain;opacity:.06;pointer-events:none;animation:floaty 14s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(calc(-50% - 14px)) rotate(2deg)}}
+.why-inner{position:relative;z-index:1;max-width:1360px;margin:0 auto;padding:104px 32px}
+.why-inner .lbl{color:rgba(255,255,255,.8)}
+.why-inner .ttl{color:#fff}
+.why-inner .ttl span{color:#fff;text-decoration:underline;text-decoration-color:rgba(255,255,255,.4);text-underline-offset:8px;text-decoration-thickness:3px}
+.why-g{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:60px;border:1px solid rgba(255,255,255,.18)}
+.wc{padding:44px;border-right:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18);transition:background .3s}
+.wc:nth-child(3n){border-right:none}
+.wc:nth-child(4),.wc:nth-child(5),.wc:nth-child(6){border-bottom:none}
+.wc:hover{background:rgba(0,0,0,.12)}
+.wc-n{font-size:11px;font-weight:800;letter-spacing:2.5px;color:rgba(255,255,255,.6);margin-bottom:18px}
+.wc-ico{width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.wc-ico svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2.2}
+.wc-t{font-size:18px;font-weight:800;letter-spacing:-.4px;margin-bottom:10px;color:#fff}
+.wc-p{font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.7}
+
+/* ── SPLIT (con imagen 5) ── */
+.split{padding:0;background:var(--white)}
+.split-in{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;align-items:stretch}
+.split-img{position:relative;overflow:hidden;min-height:560px;background:linear-gradient(135deg,#FFE5E5 0%,#FFFFFF 100%);border-radius:20px;margin:104px 0 104px 32px}
+.split-img img{width:100%;height:100%;object-fit:cover;transition:transform 1s ease}
+.split-img:hover img{transform:scale(1.04)}
+.split-img::after{content:'';position:absolute;inset:0;background:linear-gradient(225deg,transparent 65%,rgba(204,0,0,.1) 100%);pointer-events:none}
+.split-body{padding:104px 64px 104px 80px;display:flex;flex-direction:column;justify-content:center}
+.split-body h2{font-size:clamp(28px,3.2vw,44px);font-weight:900;letter-spacing:-1.2px;line-height:1.08;margin-bottom:18px;color:var(--g800)}
+.split-body h2 span{color:var(--red)}
+.split-body p{font-size:15px;color:var(--g500);line-height:1.75;margin-bottom:28px}
+.split-pts{display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
+.spt{display:flex;align-items:flex-start;gap:14px}
+.spt-dot{width:7px;height:7px;border-radius:50%;background:var(--red);margin-top:9px;flex-shrink:0;box-shadow:0 0 0 4px var(--red-soft)}
+.spt-t{font-size:14.5px;color:var(--g500);line-height:1.65}
+.spt-t strong{color:var(--g800);font-weight:700}
+
+/* ── COUNTER STRIP (negro) ── */
+.counter-strip{background:var(--black);padding:60px 32px;position:relative;overflow:hidden}
+.counter-strip::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--red),transparent)}
+.counter-inner{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;position:relative;z-index:1}
+.ctr strong{display:block;font-size:46px;font-weight:900;letter-spacing:-2.5px;color:#fff;line-height:1}
+.ctr strong span{color:var(--red)}
+.ctr small{font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:10px;display:block}
+
+/* ── STEPS ── */
+.steps{padding:104px 32px;background:var(--white)}
+.steps-inner{max-width:1360px;margin:0 auto}
+.steps-g{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative}
+.steps-g::before{content:'';position:absolute;top:38px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(to right,transparent,var(--g100) 10%,var(--g100) 90%,transparent);z-index:0}
+.step{padding:0 24px;text-align:center;position:relative;z-index:1}
+.step-n{width:76px;height:76px;border-radius:50%;border:2px solid var(--g100);background:var(--white);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;transition:all .3s;color:var(--red)}
+.step-n svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2.2}
+.step:hover .step-n{border-color:var(--red);background:var(--red);color:#fff;transform:translateY(-4px) scale(1.05);box-shadow:0 14px 30px var(--red-glow)}
+.step-num{font-size:11px;font-weight:800;letter-spacing:2.5px;color:var(--red);margin-bottom:12px}
+.step-t{font-size:16px;font-weight:800;letter-spacing:-.3px;margin-bottom:8px;color:var(--g800)}
+.step-p{font-size:13.5px;color:var(--g500);line-height:1.65}
+
+/* ── CATÁLOGO PREVIEW (mantengo intacto en estructura, lo paso a claro) ── */
+.catprev{padding:104px 32px;background:var(--off);border-top:1px solid var(--line)}
+.catprev-inner{max-width:1360px;margin:0 auto}
+.catprev-g{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:56px}
+.cp-card{border-radius:14px;overflow:hidden;position:relative;cursor:pointer;background:var(--white);border:1px solid var(--line);transition:transform .35s cubic-bezier(.34,1.4,.64,1),border-color .3s,box-shadow .3s}
+.cp-card:hover{transform:translateY(-8px);border-color:var(--red);box-shadow:0 28px 50px rgba(0,0,0,.08),0 0 0 1px var(--red)}
+.cp-img-wrap{position:relative;overflow:hidden;height:200px;background:var(--g50)}
+.cp-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.cp-card:hover .cp-img{transform:scale(1.08)}
+.cp-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(204,0,0,.0) 0%,rgba(204,0,0,.92) 100%);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .35s;flex-direction:column;gap:8px;color:#fff}
+.cp-card:hover .cp-overlay{opacity:1}
+.cp-ovr-lbl{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.cp-ovr-ref{font-size:18px;font-weight:900;letter-spacing:-.3px}
+.cp-info{padding:18px 18px 20px;background:var(--white)}
+.cp-ref{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--g400);margin-bottom:4px}
+.cp-name{font-size:15px;font-weight:800;color:var(--g800);letter-spacing:-.3px;margin-bottom:8px;line-height:1.3}
+.cp-badge{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);background:var(--red-soft);padding:4px 10px;border-radius:99px;display:inline-block}
+.catprev-cta{text-align:center;margin-top:52px}
+
+/* ── PLANES COMERCIALES ── */
+.plans{padding:104px 32px;background:var(--white)}
+.plans-inner{max-width:1360px;margin:0 auto}
+.plans-g{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:60px}
+.plan-card{border-radius:18px;border:1px solid var(--line);background:var(--white);padding:42px 36px;position:relative;transition:transform .35s,border-color .3s,box-shadow .3s}
+.plan-card:hover{transform:translateY(-6px);border-color:var(--red);box-shadow:0 30px 56px rgba(0,0,0,.07)}
+.plan-card.featured{border-color:var(--red);background:linear-gradient(165deg,var(--red-soft) 0%,var(--white) 50%);box-shadow:0 20px 40px rgba(204,0,0,.08)}
+.plan-card.featured::before{content:'MÁS ELEGIDO';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:9px;font-weight:800;letter-spacing:2px;padding:5px 16px;border-radius:0 0 8px 8px}
+.plan-icon{width:54px;height:54px;border-radius:12px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.plan-icon svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2.2}
+.plan-type{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.plan-name{font-size:25px;font-weight:900;letter-spacing:-.8px;margin-bottom:12px;color:var(--g800)}
+.plan-desc{font-size:14px;color:var(--g500);line-height:1.7;margin-bottom:28px}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
+.plan-feats li{display:flex;align-items:flex-start;gap:11px;font-size:13.5px;color:var(--g500);line-height:1.55}
+.plan-feats li::before{content:'';width:18px;height:18px;border-radius:50%;background:var(--red-soft);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CC0000' stroke-width='3'><path d='M5 12l5 5 9-9'/></svg>");background-size:11px;background-repeat:no-repeat;background-position:center;flex-shrink:0;margin-top:1px}
+.plan-feats li strong{color:var(--g800)}
+.plan-cta{display:block;text-align:center;font-size:13.5px;font-weight:700;padding:13px 24px;border-radius:8px;border:1px solid var(--g200);color:var(--g700);background:transparent;transition:all .2s}
+.plan-card.featured .plan-cta{background:var(--red);border-color:var(--red);color:#fff}
+.plan-card:hover .plan-cta{border-color:var(--red);color:var(--red)}
+.plan-card.featured:hover .plan-cta{background:var(--red-d)}
+
+/* ── TESTIMONIOS ── */
+.testi{padding:104px 32px;background:var(--off);border-top:1px solid var(--line)}
+.testi-inner{max-width:1360px;margin:0 auto}
+.testi-g{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+.tc-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:34px;position:relative;transition:all .3s}
+.tc-card:hover{border-color:var(--red);transform:translateY(-4px);box-shadow:0 24px 48px rgba(0,0,0,.06)}
+.tc-stars{display:flex;gap:3px;margin-bottom:14px}
+.tc-star{color:#F59E0B;font-size:14px}
+.tc-quote{font-size:42px;line-height:1;color:var(--red);margin-bottom:12px;font-family:Georgia,serif;opacity:.5}
+.tc-text{font-size:14.5px;color:var(--g700);line-height:1.75;margin-bottom:24px;font-style:italic}
+.tc-author{display:flex;align-items:center;gap:13px}
+.tc-av{width:44px;height:44px;border-radius:50%;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:800}
+.tc-av svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2}
+.tc-info strong{display:block;font-size:13.5px;font-weight:800;color:var(--g800)}
+.tc-info span{font-size:11.5px;color:var(--g500)}
+
+/* ── CONTACTO ── */
+.ct{padding:104px 32px;background:var(--white)}
+.ct-i{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.ct-l h2{font-size:clamp(28px,3.2vw,44px);font-weight:900;letter-spacing:-1.4px;line-height:1.05;margin-bottom:18px;color:var(--g800)}
+.ct-l h2 span{color:var(--red)}
+.ct-l > p{font-size:15px;color:var(--g500);line-height:1.75;margin-bottom:32px}
+.ct-ways{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.cw{display:flex;align-items:center;gap:14px;background:var(--off);border:1px solid var(--line);border-radius:12px;padding:18px 22px;transition:all .25s}
+.cw:hover{border-color:var(--red);transform:translateX(4px);box-shadow:0 8px 20px rgba(0,0,0,.04)}
+.cw-ico{width:42px;height:42px;border-radius:10px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cw-ico svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.2}
+.cw-info strong{display:block;font-size:14px;font-weight:800;color:var(--g800)}
+.cw-info span{font-size:12px;color:var(--g500)}
+.fc{background:var(--off);border:1px solid var(--line);border-radius:18px;padding:38px}
+.fc h3{font-size:19px;font-weight:800;margin-bottom:24px;color:var(--g800)}
+.fg{margin-bottom:18px}
+.fg label{display:block;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--g500);margin-bottom:8px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--white);border:1px solid var(--g200);color:var(--g800);font-family:inherit;font-size:14px;padding:12px 14px;border-radius:8px;outline:none;resize:vertical;transition:border-color .2s,box-shadow .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--g400)}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bwa{width:100%;background:#25D366;color:#fff;font-size:14px;font-weight:700;font-family:inherit;padding:15px;border-radius:8px;border:none;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .2s;margin-top:8px}
+.bwa:hover{background:#1da855;transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,211,102,.3)}
+
+/* ── FOOTER (negro) ── */
+.ft{background:var(--black);border-top:1px solid var(--g800);padding:72px 32px 32px;color:rgba(255,255,255,.7)}
+.ft-g{max-width:1360px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:52px}
+.ft-bb{background:var(--red);padding:8px 14px;border-radius:6px;display:inline-flex;align-items:center;margin-bottom:18px}
+.ft-bb img{height:24px;filter:brightness(0) invert(1)}
+.ft-br p{font-size:13.5px;color:rgba(255,255,255,.6);line-height:1.75;max-width:280px}
+.ft-col h5{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:18px}
+.ft-col ul{list-style:none}
+.ft-col ul li{margin-bottom:10px}
+.ft-col ul li a{font-size:13.5px;color:rgba(255,255,255,.7);transition:color .18s}
+.ft-col ul li a:hover{color:#fff}
+.ft-bot{max-width:1360px;margin:0 auto;padding-top:30px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ft-bot p{font-size:12px;color:rgba(255,255,255,.4)}
+
+/* ── WA FLOAT ── */
+.waf{position:fixed;bottom:28px;right:28px;z-index:90;background:#25D366;color:#fff;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(37,211,102,.4);transition:transform .25s,box-shadow .25s;animation:waf 3.5s ease-in-out infinite}
+.waf:hover{transform:scale(1.1)!important;box-shadow:0 10px 32px rgba(37,211,102,.55)}
+.waf svg{width:28px;height:28px;fill:currentColor}
+@keyframes waf{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ── BRANDED FALLBACK (logo febi como fondo) ── */
+.branded{position:relative}
+.branded::before{
+  content:'';position:absolute;inset:0;
+  background-image:url('assets/febi-logo.svg');
+  background-repeat:no-repeat;background-position:center;background-size:38%;
+  opacity:.18;pointer-events:none;z-index:0;
+  transition:opacity .5s ease,transform .8s ease;
+}
+.branded:hover::before{opacity:.28;transform:scale(1.04)}
+.branded > img{position:relative;z-index:1}
+.branded.bright::before{opacity:.92;filter:none}
+.branded > .catcard-info,.branded > .catcard-grad,.branded > .catcard-redshine,.branded > .catcard-arrow{z-index:2}
+.branded > .h-imgframe-badge{z-index:3}
+
+/* febi mark watermark — esquina inferior derecha */
+.fmark{position:absolute;bottom:14px;right:14px;width:42px;height:42px;background:url('assets/febi-logo.svg') no-repeat center/contain;opacity:.55;z-index:3;transition:opacity .3s,transform .3s}
+.fmark.dark{filter:invert(1) brightness(.2);opacity:.35}
+.catcard:hover .fmark,.bb-img:hover .fmark,.h-imgframe:hover .fmark{opacity:.85;transform:scale(1.1)}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.09s}.rv.d2{transition-delay:.18s}.rv.d3{transition-delay:.27s}.rv.d4{transition-delay:.36s}.rv.d5{transition-delay:.45s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero-in{grid-template-columns:1fr;gap:48px}.h-imgframe{max-width:480px;margin:0 auto;aspect-ratio:1/1}
+  .hero-bg-shape{width:100%;clip-path:none;opacity:.5}
+  .brandblock-in{grid-template-columns:1fr;gap:48px}
+  .bb-img{max-width:480px;margin:0 auto;aspect-ratio:1/1}
+  .cats-g{grid-template-columns:repeat(2,1fr)}
+  .catprev-g{grid-template-columns:repeat(2,1fr)}
+  .split-in{grid-template-columns:1fr}
+  .split-img{margin:80px 32px 0;min-height:380px}
+  .split-body{padding:60px 32px 80px}
+  .why-g{grid-template-columns:1fr 1fr}
+  .wc:nth-child(2n){border-right:none}.wc:nth-child(4){border-bottom:1px solid rgba(255,255,255,.18)}
+  .wc:nth-child(5),.wc:nth-child(6){border-bottom:none}
+  .ct-i{grid-template-columns:1fr}
+  .ft-g{grid-template-columns:1fr 1fr}
+  .plans-g{grid-template-columns:1fr}
+  .testi-g{grid-template-columns:1fr}
+  .steps-g{grid-template-columns:1fr 1fr;gap:48px 0}.steps-g::before{display:none}
+  .counter-inner{grid-template-columns:1fr 1fr;gap:40px 32px}
+}
+@media(max-width:768px){
+  .nm{display:none}
+  .why-g{grid-template-columns:1fr}
+  .wc{border-right:none!important;border-bottom:1px solid rgba(255,255,255,.18)!important}
+  .wc:last-child{border-bottom:none!important}
+  .ft-g{grid-template-columns:1fr}.ft-bot{flex-direction:column;text-align:center}
+  .h-act{flex-direction:column;align-items:stretch}
+  .bm,.bo{justify-content:center;width:100%}
+  .fg2{grid-template-columns:1fr}
+  .hero h1{letter-spacing:-2.5px}
+  .steps-g{grid-template-columns:1fr}
+  .counter-inner{grid-template-columns:1fr}
+  .cats-g{grid-template-columns:1fr}
+  .catprev-g{grid-template-columns:1fr 1fr}
+  .h-nums{flex-wrap:wrap;gap:24px}
+  .ti{padding:0 22px;font-size:11.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="ni">
+    <a href="#" class="logo">
+      <div class="logo-box"><img src="assets/febi-logo.svg" alt="febi"></div>
+    </a>
+    <div class="nm">
+      <a href="#marcas">Compatibilidad</a>
+      <a href="#categorias">Categorías</a>
+      <a href="#planes">Planes comerciales</a>
+      <a href="#porque">Por qué febi</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <div class="ne">
+      <a href="#planes" class="bg">Planes mayoristas</a>
+      <a href="https://wa.me/5491162770520" target="_blank" class="br">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-in">
+    <div>
+      <div class="h-tag rv">Para casas de repuestos y mayoristas</div>
+      <h1 class="rv">El proveedor<br>que tu negocio<br><span>necesita.</span></h1>
+      <p class="h-sub rv">febi bilstein en Argentina. Repuestos de ingeniería alemana con condiciones comerciales exclusivas para distribuidores, casas de repuestos y mayoristas de todo el país.</p>
+      <div class="h-act rv">
+        <a href="#contacto" class="bm">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Quiero ser distribuidor
+        </a>
+        <a href="#planes" class="bo">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+          Ver planes comerciales
+        </a>
+      </div>
+      <div class="h-nums rv">
+        <div class="h-num"><strong>60+</strong><small>Años de marca</small></div>
+        <div class="h-num"><strong>1.100+</strong><small>Refs. en stock</small></div>
+        <div class="h-num"><strong>Todo el país</strong><small>Distribución</small></div>
+      </div>
+    </div>
+    <div class="h-imgframe branded rv">
+      <div class="h-imgframe-badge">Ingeniería alemana</div>
+      <img src="assets/hero/marca.jpg" alt="febi bilstein — autopartes" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#CC0000 0%,#A80000 100%)'">
+      <span class="fmark"></span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker"><div class="tt" id="ticker"></div></div>
+
+<!-- MARCAS COMPATIBLES -->
+<div class="brands" id="marcas">
+  <div class="bw">
+    <div class="brands-logo rv">
+      <div class="lb-pill"><img src="assets/febi-logo.svg" alt="febi bilstein"></div>
+    </div>
+    <p class="b-lbl rv d1">Compatible con las principales marcas del mercado argentino</p>
+    <div class="b-flow rv d1">
+      <span class="btag">Audi</span><span class="btag">Volkswagen</span><span class="btag">Seat</span>
+      <span class="btag">Škoda</span><span class="btag">BMW</span><span class="btag">Mercedes-Benz</span>
+      <span class="btag">Ford</span><span class="btag">Opel</span><span class="btag">Peugeot</span>
+      <span class="btag">Renault</span><span class="btag">Fiat</span><span class="btag">Citroën</span>
+      <span class="btag">Toyota</span><span class="btag">Honda</span><span class="btag">Chevrolet</span>
+    </div>
+  </div>
+</div>
+
+<!-- LA MARCA FEBI -->
+<div class="brandblock">
+  <div class="brandblock-in">
+    <div class="bb-img branded rv">
+      <img src="assets/hero/marca.jpg" alt="febi bilstein" onerror="this.style.display='none'">
+      <span class="fmark"></span>
+    </div>
+    <div class="rv d1">
+      <p class="lbl">La marca</p>
+      <h2 class="ttl">Más de 60 años de<br><span>ingeniería alemana.</span></h2>
+      <p class="sub" style="margin-bottom:8px">febi bilstein es la marca técnica del Grupo Bilstein. Más de 100.000 referencias en su catálogo global, fabricadas con tolerancias exactas y materiales certificados que cumplen o superan las especificaciones OEM.</p>
+      <div class="bb-pts">
+        <div class="bbp"><div class="bbp-icon">✓</div><p class="bbp-t"><strong>Origen alemán</strong> — Fabricado bajo estándares del mercado OEM europeo</p></div>
+        <div class="bbp"><div class="bbp-icon">✓</div><p class="bbp-t"><strong>Calidad certificada</strong> — Cada pieza testeada antes de salir de fábrica</p></div>
+        <div class="bbp"><div class="bbp-icon">✓</div><p class="bbp-t"><strong>Línea completa</strong> — Cobertura para vehículos europeos, japoneses y americanos</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATEGORÍAS QUE CUBRIMOS -->
+<div class="cats" id="categorias">
+  <div class="cats-in">
+    <div class="cats-head rv">
+      <p class="lbl">Lo que cubrimos</p>
+      <h2 class="ttl">Categorías para cada<br><span>parte del vehículo.</span></h2>
+      <p class="sub">Una marca, todas las soluciones. Desde fluidos especializados hasta componentes mecánicos críticos.</p>
+    </div>
+    <div class="cats-g">
+
+      <div class="catcard rv">
+        <img class="catcard-img" src="assets/hero/fluidos.jpg" alt="Fluidos hidráulicos" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(155deg,#0d3b1f 0%,#1a6b3a 60%,#2d8a4f 100%)'">
+        <div class="catcard-grad"></div>
+        <div class="catcard-redshine"></div>
+        <div class="catcard-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="catcard-info">
+          <p class="catcard-num">01 / FLUIDOS</p>
+          <h3 class="catcard-name">Fluidos hidráulicos</h3>
+          <p class="catcard-desc">Líquidos de dirección, hidráulicos LHM y de alta exigencia, calidad OEM.</p>
+        </div>
+      </div>
+
+      <div class="catcard rv d1">
+        <img class="catcard-img" src="assets/hero/lubricantes.jpg" alt="Lubricantes" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(155deg,#1a1a1a 0%,#2a2a2a 50%,#3a3a3a 100%)'">
+        <div class="catcard-grad"></div>
+        <div class="catcard-redshine"></div>
+        <div class="catcard-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="catcard-info">
+          <p class="catcard-num">02 / LUBRICANTES</p>
+          <h3 class="catcard-name">Aceites para motor</h3>
+          <p class="catcard-desc">Mobility Guard y Cargo Hero — desde turismos hasta transporte pesado.</p>
+        </div>
+      </div>
+
+      <div class="catcard rv d2">
+        <img class="catcard-img" src="assets/hero/suspension.jpg" alt="Amortiguadores" onerror="this.src='../Imagenes/Febi/02562_img1.jpg';this.onerror=function(){this.style.display='none';this.parentElement.style.background='linear-gradient(155deg,#7a0000 0%,#CC0000 100%)'}">
+        <div class="catcard-grad"></div>
+        <div class="catcard-redshine"></div>
+        <div class="catcard-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="catcard-info">
+          <p class="catcard-num">03 / SUSPENSIÓN</p>
+          <h3 class="catcard-name">Amortiguadores</h3>
+          <p class="catcard-desc">Confort de marcha y respuesta de frenada, para todos los segmentos.</p>
+        </div>
+      </div>
+
+      <div class="catcard rv">
+        <img class="catcard-img" src="assets/hero/distribucion.jpg" alt="Kits de distribución" onerror="this.src='../Imagenes/Febi/01117_img1.jpg';this.onerror=function(){this.style.display='none';this.parentElement.style.background='linear-gradient(155deg,#CC0000 0%,#7a0000 100%)'}">
+        <div class="catcard-grad"></div>
+        <div class="catcard-redshine"></div>
+        <div class="catcard-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="catcard-info">
+          <p class="catcard-num">04 / DISTRIBUCIÓN</p>
+          <h3 class="catcard-name">Kits completos</h3>
+          <p class="catcard-desc">Tensores, correas y poleas — todo en una caja, listo para taller.</p>
+        </div>
+      </div>
+
+      <div class="catcard rv d1">
+        <img class="catcard-img" src="assets/hero/motor.jpg" alt="Soportes y bujes" onerror="this.src='../Imagenes/Febi/01107_img1.jpg';this.onerror=function(){this.style.display='none';this.parentElement.style.background='linear-gradient(155deg,#CC0000 0%,#A80000 100%)'}">
+        <div class="catcard-grad"></div>
+        <div class="catcard-redshine"></div>
+        <div class="catcard-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="catcard-info">
+          <p class="catcard-num">05 / MOTOR</p>
+          <h3 class="catcard-name">Soportes y bujes</h3>
+          <p class="catcard-desc">Componentes de motor y transmisión, ingeniería alemana de precisión.</p>
+        </div>
+      </div>
+
+      <div class="catcard rv d2">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--g800) 0%,var(--black) 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;padding:32px;text-align:center">
+          <p style="font-size:11px;font-weight:800;letter-spacing:2.5px;color:rgba(255,255,255,.5);margin-bottom:14px">Y MUCHO MÁS</p>
+          <h3 style="font-size:26px;font-weight:900;letter-spacing:-.8px;margin-bottom:10px">Frenos, mantenimiento, electrónica…</h3>
+          <p style="font-size:13.5px;color:rgba(255,255,255,.7);max-width:240px;line-height:1.55;margin-bottom:24px">Más de 100.000 referencias en el catálogo global de febi.</p>
+          <a href="catalogo.html" style="display:inline-flex;align-items:center;gap:8px;color:var(--red);background:#fff;padding:11px 22px;border-radius:8px;font-size:13px;font-weight:800">
+            Ver catálogo completo
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- POR QUÉ FEBI -->
+<div class="why-wrap" id="porque">
+  <div class="why-inner">
+    <div class="rv"><p class="lbl">Por qué elegirnos</p>
+    <h2 class="ttl">No es un repuesto más.<br><span>Es el correcto.</span></h2></div>
+    <div class="why-g">
+      <div class="wc rv"><p class="wc-n">01</p><div class="wc-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div><h3 class="wc-t">Origen alemán</h3><p class="wc-p">Fabricado según los estándares del mercado OEM europeo. La misma calidad que usan los fabricantes de vehículos.</p></div>
+      <div class="wc rv d1"><p class="wc-n">02</p><div class="wc-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div><h3 class="wc-t">Precisión certificada</h3><p class="wc-p">Tolerancias exactas, materiales certificados. Cada pieza testeada para cumplir o superar la especificación original.</p></div>
+      <div class="wc rv d2"><p class="wc-n">03</p><div class="wc-ico"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div><h3 class="wc-t">Stock local</h3><p class="wc-p">Más de 1.100 referencias disponibles en Argentina. Sin tiempos de espera para las piezas más buscadas del mercado.</p></div>
+      <div class="wc rv"><p class="wc-n">04</p><div class="wc-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><h3 class="wc-t">Toda la línea, a pedido</h3><p class="wc-p">El catálogo febi supera las 100.000 referencias mundiales. Lo que no está en stock local, lo gestionamos.</p></div>
+      <div class="wc rv d1"><p class="wc-n">05</p><div class="wc-ico"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><h3 class="wc-t">Soporte técnico real</h3><p class="wc-p">Te ayudamos a identificar la referencia exacta para cada vehículo, motorización y año. Sin errores, sin pérdidas.</p></div>
+      <div class="wc rv d2"><p class="wc-n">06</p><div class="wc-ico"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div><h3 class="wc-t">Envíos a todo el país</h3><p class="wc-p">Distribuimos a talleres, flotas y distribuidores en todo el territorio argentino. Atención personalizada.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- SPLIT (con imagen 5: caja con kit) -->
+<div class="split">
+  <div class="split-in">
+    <div class="split-img branded rv">
+      <img src="assets/hero/distribucion.jpg" alt="Kit de distribución febi" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#CC0000 0%,#A80000 100%)'">
+      <span class="fmark"></span>
+    </div>
+    <div class="split-body rv d1">
+      <p class="lbl">Para distribuidores y mayoristas</p>
+      <h2>Un proveedor que <span>escala con vos.</span></h2>
+      <p>Diseñamos condiciones comerciales para que tu negocio crezca. Ya seas una casa de repuestos consolidada o un mayorista de alto volumen, tenemos un esquema adaptado a tu operación.</p>
+      <div class="split-pts">
+        <div class="spt"><div class="spt-dot"></div><p class="spt-t"><strong>Casas de repuestos:</strong> descuentos por volumen, catálogo exclusivo y ejecutivo comercial propio.</p></div>
+        <div class="spt"><div class="spt-dot"></div><p class="spt-t"><strong>Mayoristas:</strong> precios de primer nivel, crédito y cobertura territorial preferencial.</p></div>
+        <div class="spt"><div class="spt-dot"></div><p class="spt-t"><strong>Todo el país:</strong> despachos en 24–48 hs a cualquier punto del territorio argentino.</p></div>
+        <div class="spt"><div class="spt-dot"></div><p class="spt-t"><strong>Línea completa a pedido:</strong> más de 100.000 referencias gestionables.</p></div>
+      </div>
+      <a href="#contacto" class="bm">Solicitar cuenta mayorista</a>
+    </div>
+  </div>
+</div>
+
+<!-- COUNTER STRIP -->
+<div class="counter-strip">
+  <div class="counter-inner">
+    <div class="ctr rv"><strong>100.000<span>+</span></strong><small>Referencias febi globales</small></div>
+    <div class="ctr rv d1"><strong>1.100<span>+</span></strong><small>En stock local Argentina</small></div>
+    <div class="ctr rv d2"><strong>24<span>hs</span></strong><small>Despacho desde stock local</small></div>
+    <div class="ctr rv d3"><strong>24<span>hs</span></strong><small>Respuesta comercial</small></div>
+  </div>
+</div>
+
+<!-- CÓMO EMPEZAR -->
+<div class="steps">
+  <div class="steps-inner">
+    <div class="rv" style="text-align:center">
+      <p class="lbl">Simple y rápido</p>
+      <h2 class="ttl" style="text-align:center">Empezar a trabajar<br><span>con nosotros.</span></h2>
+    </div>
+    <div class="steps-g">
+      <div class="step rv">
+        <div class="step-n"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <p class="step-num">PASO 01</p>
+        <h3 class="step-t">Contactanos</h3>
+        <p class="step-p">Escribinos por WhatsApp o completá el formulario contándonos tu negocio y zona de cobertura.</p>
+      </div>
+      <div class="step rv d1">
+        <div class="step-n"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <p class="step-num">PASO 02</p>
+        <h3 class="step-t">Evaluamos tu perfil</h3>
+        <p class="step-p">Analizamos tu volumen estimado y te asignamos las condiciones comerciales que corresponden a tu operación.</p>
+      </div>
+      <div class="step rv d2">
+        <div class="step-n"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <p class="step-num">PASO 03</p>
+        <h3 class="step-t">Accedés al catálogo</h3>
+        <p class="step-p">Te damos acceso completo al catálogo con precios mayoristas, listas de stock y condiciones de pago personalizadas.</p>
+      </div>
+      <div class="step rv d3">
+        <div class="step-n"><svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2zM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
+        <p class="step-num">PASO 04</p>
+        <h3 class="step-t">Empezás a vender</h3>
+        <p class="step-p">Soporte técnico dedicado, despachos rápidos y un equipo que te acompaña en cada consulta.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CATÁLOGO PREVIEW (única sección con productos) -->
+<div class="catprev" id="catalogo">
+  <div class="catprev-inner">
+    <div class="rv">
+      <p class="lbl">Catálogo febi Argentina</p>
+      <h2 class="ttl">Más de 1.100 referencias<br><span>disponibles en stock</span></h2>
+      <p class="sub">Ingeniería alemana para el mercado argentino. Repuestos que cumplen o superan las especificaciones OEM originales.</p>
+    </div>
+    <div class="catprev-g">
+      <div class="cp-card rv" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/01107_img1.jpg" alt="Soporte motor" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 01107</span></div></div>
+        <div class="cp-info"><div class="cp-ref">01107</div><div class="cp-name">Soporte motor / cambios</div><span class="cp-badge">Motor</span></div>
+      </div>
+      <div class="cp-card rv d1" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/01117_img1.jpg" alt="Distribución" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 01117</span></div></div>
+        <div class="cp-info"><div class="cp-ref">01117</div><div class="cp-name">Kit tensor distribución</div><span class="cp-badge">Distribución</span></div>
+      </div>
+      <div class="cp-card rv d2" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/02562_img1.jpg" alt="Amortiguador" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 02562</span></div></div>
+        <div class="cp-info"><div class="cp-ref">02562</div><div class="cp-name">Amortiguador suspensión</div><span class="cp-badge">Suspensión</span></div>
+      </div>
+      <div class="cp-card rv d3" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/07060_img1.jpg" alt="Filtro" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 07060</span></div></div>
+        <div class="cp-info"><div class="cp-ref">07060</div><div class="cp-name">Filtro aceite motor</div><span class="cp-badge">Mantenimiento</span></div>
+      </div>
+      <div class="cp-card rv" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/08064_img1.jpg" alt="Frenos" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 08064</span></div></div>
+        <div class="cp-info"><div class="cp-ref">08064</div><div class="cp-name">Componente sistema frenos</div><span class="cp-badge">Frenos</span></div>
+      </div>
+      <div class="cp-card rv d1" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/09045_img1.jpg" alt="Motor" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 09045</span></div></div>
+        <div class="cp-info"><div class="cp-ref">09045</div><div class="cp-name">Pieza sistema motor</div><span class="cp-badge">Motor</span></div>
+      </div>
+      <div class="cp-card rv d2" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/06161_img1.jpg" alt="Junta" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 06161</span></div></div>
+        <div class="cp-info"><div class="cp-ref">06161</div><div class="cp-name">Junta / sello motor</div><span class="cp-badge">Motor</span></div>
+      </div>
+      <div class="cp-card rv d3" onclick="window.location='catalogo.html'">
+        <div class="cp-img-wrap"><img class="cp-img" src="../Imagenes/Febi/100248_img1.jpg" alt="Electrónica" loading="lazy"><div class="cp-overlay"><span class="cp-ovr-lbl">Ver en catálogo</span><span class="cp-ovr-ref">Ref. 100248</span></div></div>
+        <div class="cp-info"><div class="cp-ref">100248</div><div class="cp-name">Sensor / componente electrónico</div><span class="cp-badge">Electrónica</span></div>
+      </div>
+    </div>
+    <div class="catprev-cta rv">
+      <a href="catalogo.html" class="bm" style="display:inline-flex">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Ver catálogo completo — 1.100+ referencias
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- PLANES COMERCIALES -->
+<div class="plans" id="planes">
+  <div class="plans-inner">
+    <div class="rv">
+      <p class="lbl">Programa de distribuidores</p>
+      <h2 class="ttl">Condiciones <span>para cada negocio.</span></h2>
+      <p class="sub">Trabajamos con diferentes perfiles. Las condiciones exactas se definen con cada cliente — esto es una guía orientativa.</p>
+    </div>
+    <div class="plans-g">
+
+      <div class="plan-card rv">
+        <div class="plan-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+        <p class="plan-type">Perfil 01</p>
+        <h3 class="plan-name">Taller mecánico</h3>
+        <p class="plan-desc">Para talleres que quieren acceder a repuestos de calidad OEM con soporte técnico directo y tiempos de entrega rápidos.</p>
+        <ul class="plan-feats">
+          <li><strong>Precios preferenciales</strong> sobre precio de lista</li>
+          <li>Soporte técnico para identificación de piezas</li>
+          <li>Despacho en 24–48 hs a todo el país</li>
+          <li>Garantía en todos los productos</li>
+          <li>Sin pedido mínimo en primeras compras</li>
+        </ul>
+        <a href="#contacto" class="plan-cta">Consultar condiciones</a>
+      </div>
+
+      <div class="plan-card featured rv d1">
+        <div class="plan-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <p class="plan-type">Perfil 02</p>
+        <h3 class="plan-name">Casa de repuestos</h3>
+        <p class="plan-desc">Para casas de repuestos que necesitan un proveedor confiable con stock permanente, precios competitivos y respaldo de marca.</p>
+        <ul class="plan-feats">
+          <li><strong>Descuentos por volumen</strong> desde el primer pedido</li>
+          <li>Acceso al catálogo completo con disponibilidad en tiempo real</li>
+          <li>Ejecutivo comercial asignado</li>
+          <li>Plazos de pago y financiamiento disponibles</li>
+          <li>Material de marketing y señalética de marca</li>
+          <li>Capacitaciones técnicas del producto</li>
+        </ul>
+        <a href="#contacto" class="plan-cta">Quiero ser distribuidor</a>
+      </div>
+
+      <div class="plan-card rv d2">
+        <div class="plan-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <p class="plan-type">Perfil 03</p>
+        <h3 class="plan-name">Mayorista</h3>
+        <p class="plan-desc">Para distribuidores y mayoristas con operaciones de alto volumen que necesitan las mejores condiciones del mercado.</p>
+        <ul class="plan-feats">
+          <li><strong>Precios exclusivos</strong> para grandes volúmenes</li>
+          <li>Acceso prioritario a líneas bajo pedido</li>
+          <li>Gestión de importación a demanda</li>
+          <li>Condiciones de pago y crédito personalizadas</li>
+          <li>Cobertura territorial exclusiva (según zona)</li>
+          <li>Soporte postventa y gestión de garantías</li>
+        </ul>
+        <a href="#contacto" class="plan-cta">Hablar con un ejecutivo</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIOS -->
+<div class="testi">
+  <div class="testi-inner">
+    <div class="rv" style="text-align:center">
+      <p class="lbl">Lo que dicen nuestros distribuidores</p>
+      <h2 class="ttl" style="text-align:center">Negocios que ya<br><span>trabajan con nosotros.</span></h2>
+    </div>
+    <div class="testi-g">
+
+      <div class="tc-card rv">
+        <div class="tc-stars"><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span></div>
+        <div class="tc-quote">"</div>
+        <p class="tc-text">Desde que empezamos a trabajar con febi, la cantidad de devoluciones por fallas bajó a cero. Los clientes notan la diferencia y vuelven a pedirnos la misma marca.</p>
+        <div class="tc-author">
+          <div class="tc-av"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+          <div class="tc-info"><strong>Repuestos del Norte</strong><span>Casa de repuestos — Buenos Aires</span></div>
+        </div>
+      </div>
+
+      <div class="tc-card rv d1">
+        <div class="tc-stars"><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span></div>
+        <div class="tc-quote">"</div>
+        <p class="tc-text">El soporte técnico es lo que más valoramos. Siempre que tenemos una duda sobre una referencia, nos responden al instante. Eso no lo encontrás en cualquier proveedor.</p>
+        <div class="tc-author">
+          <div class="tc-av"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+          <div class="tc-info"><strong>Taller Automotriz San Martín</strong><span>Taller especializado — Córdoba</span></div>
+        </div>
+      </div>
+
+      <div class="tc-card rv d2">
+        <div class="tc-stars"><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span><span class="tc-star">★</span></div>
+        <div class="tc-quote">"</div>
+        <p class="tc-text">Como mayorista, lo que buscamos es previsibilidad. Con febi tenemos stock garantizado, plazos de entrega cumplidos y un equipo comercial que entiende lo que necesitamos.</p>
+        <div class="tc-author">
+          <div class="tc-av"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/></svg></div>
+          <div class="tc-info"><strong>Distribuidora Central</strong><span>Mayorista — Rosario, Santa Fe</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CONTACTO -->
+<div class="ct" id="contacto">
+  <div class="ct-i">
+    <div class="ct-l rv">
+      <p class="lbl">Atención comercial</p>
+      <h2>Abrí tu cuenta<br><span>mayorista hoy.</span></h2>
+      <p>Completá el formulario con los datos de tu negocio y en menos de 24 horas un ejecutivo comercial te contacta con las condiciones que te corresponden.</p>
+      <div class="ct-ways">
+        <a href="https://wa.me/5491162770520" target="_blank" class="cw">
+          <div class="cw-ico"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg></div>
+          <div class="cw-info"><strong>WhatsApp</strong><span>+54 11 6277-0520 — Respuesta inmediata</span></div>
+        </a>
+        <div class="cw">
+          <div class="cw-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="cw-info"><strong>Email comercial</strong><span>ventas@febi.com.ar</span></div>
+        </div>
+        <div class="cw">
+          <div class="cw-ico"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="cw-info"><strong>Distribución</strong><span>Todo el territorio argentino</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc rv d1">
+      <h3>Solicitar cuenta mayorista</h3>
+      <div class="fg2">
+        <div class="fg"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+        <div class="fg"><label>Empresa</label><input type="text" placeholder="Razón social"></div>
+      </div>
+      <div class="fg2">
+        <div class="fg"><label>Email</label><input type="email" placeholder="tu@empresa.com"></div>
+        <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+54 11..."></div>
+      </div>
+      <div class="fg"><label>Tipo de negocio</label><select><option>Casa de repuestos</option><option>Taller mecánico</option><option>Distribuidor / Mayorista</option><option>Otro</option></select></div>
+      <div class="fg"><label>Provincia / Ciudad</label><input type="text" placeholder="Ej: Buenos Aires"></div>
+      <div class="fg"><label>Mensaje</label><textarea rows="3" placeholder="Contanos sobre tu operación..."></textarea></div>
+      <a href="https://wa.me/5491162770520" target="_blank" class="bwa">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Enviar consulta por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="ft">
+  <div class="ft-g">
+    <div class="ft-br">
+      <div class="ft-bb"><img src="assets/febi-logo.svg" alt="febi"></div>
+      <p>Distribución oficial de febi bilstein en Argentina. Repuestos de ingeniería alemana para distribuidores, casas de repuestos y mayoristas de todo el país.</p>
+    </div>
+    <div class="ft-col">
+      <h5>Marca</h5>
+      <ul>
+        <li><a href="#porque">Por qué febi</a></li>
+        <li><a href="#categorias">Categorías</a></li>
+        <li><a href="#marcas">Compatibilidad</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Comercial</h5>
+      <ul>
+        <li><a href="#planes">Planes mayoristas</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </div>
+    <div class="ft-col">
+      <h5>Contacto</h5>
+      <ul>
+        <li><a href="https://wa.me/5491162770520">WhatsApp</a></li>
+        <li><a href="mailto:ventas@febi.com.ar">ventas@febi.com.ar</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="ft-bot">
+    <p>© 2025 febi Argentina — Todos los derechos reservados</p>
+    <p>febi bilstein® es marca registrada del Grupo Bilstein</p>
+  </div>
+</footer>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/5491162770520" target="_blank" class="waf" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('past',window.scrollY>20)});
+
+// Ticker
+const tickerData=['Stock local más de 1.100 referencias','Despacho 24–48hs todo el país','Soporte técnico para identificación de piezas','Calidad OEM alemana','Condiciones especiales para mayoristas','100.000+ refs en catálogo global','Garantía en todos los productos'];
+const ticker=document.getElementById('ticker');
+const items=tickerData.map(t=>`<span class="ti">${t}<b>•</b></span>`).join('');
+ticker.innerHTML=items+items;
+
+// Reveal on scroll
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+// Counter animation
+const counters=document.querySelectorAll('.ctr strong');
+const cio=new IntersectionObserver((es)=>es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  const el=e.target;
+  const text=el.textContent;
+  const m=text.match(/^([\d\.]+)(.*)$/);
+  if(!m){cio.unobserve(el);return}
+  const target=parseFloat(m[1].replace(/\./g,''));
+  const suffix=m[2];
+  let cur=0;const dur=1400;const start=performance.now();
+  const step=(t)=>{
+    const p=Math.min((t-start)/dur,1);
+    const eased=1-Math.pow(1-p,3);
+    cur=Math.floor(target*eased);
+    el.innerHTML=cur.toLocaleString('es-AR')+'<span>'+suffix+'</span>';
+    if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+  cio.unobserve(el);
+}),{threshold:.5});
+counters.forEach(c=>cio.observe(c));
+
+// Tilt 3D on category cards
+document.querySelectorAll('.catcard').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`translateY(-12px) rotateX(${-y*4}deg) rotateY(${x*4}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+  });
+});
+</script>
+
+</body>
+</html>
