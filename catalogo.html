@@ -1158,8 +1158,17 @@ let currentPage = 1;
 const PAGE_SIZE = 24;
 let activeCat = '';
 
-function loadCatalog() {
-  allProducts = CATALOG_DATA_EMBEDDED.catalogo;
+async function loadCatalog() {
+  const grid = document.getElementById('products-grid');
+  if(grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:#9CA3AF">' + '<div style="font-size:36px;margin-bottom:12px">&#9203;</div>' + '<div style="font-size:15px;font-weight:600">Cargando cat\u00e1logo...</div></div>';
+  try {
+    const res = await fetch('_catalogo_data.json');
+    const data = await res.json();
+    allProducts = data.catalogo;
+  } catch(e) {
+    if(grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 20px;color:#CC0000">' + '<div style="font-size:15px;font-weight:600">Error al cargar. Recarg\u00e1 la p\u00e1gina.</div></div>';
+    return;
+  }
   STATS = allProducts.reduce((acc, p) => { acc[p.cat] = (acc[p.cat]||0)+1; return acc; }, {});
   filteredProducts = [...allProducts];
   buildCats();
@@ -2033,6 +2042,6 @@ async function doLoginCliente(){
   </div>
 </div>
 
-<script src="_catalog_embed.js"></script>
+
 </body>
 </html>
