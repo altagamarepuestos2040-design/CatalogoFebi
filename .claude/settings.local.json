@@ -38,7 +38,31 @@
       "Bash(curl -sL \"https://www.febi.com.ar/\")",
       "Bash(curl -sL -w \"%{http_code}\" -o /dev/null \"https://www.febi.com.ar/\")",
       "Bash(curl -sLo /tmp/x.html -w '%{http_code}' https://www.febi.com/__TRACKED_VAR__)",
-      "Bash(curl -sL \"https://www.febi.com/truck/fluids\")"
+      "Bash(curl -sL \"https://www.febi.com/truck/fluids\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(python *)",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\Users\\\\Usuario\\\\Desktop\\\\febi\\\\CatalogoFebi\\\\_catalogo_data.json' | ConvertFrom-Json | Select-Object -ExpandProperty categories\")",
+      "Bash(python3 *)",
+      "Bash(start *)",
+      "Bash(del *)",
+      "WebFetch(domain:altagamarepuestos2040-design.github.io)",
+      "WebFetch(domain:www.febi.com.ar)",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\Usuario\\\\Desktop\\\\febi\\\\CatalogoFebi\\\\catalogo.html\")",
+      "PowerShell(\\(Get-Content \"C:\\\\Users\\\\Usuario\\\\Desktop\\\\febi\\\\CatalogoFebi\\\\catalogo.html\" -Raw\\) -split \"`n\" | Select-Object -Last 30)",
+      "WebFetch(domain:www.bilsteingroup.com)",
+      "PowerShell(Copy-Item *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(gh api *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Usuario\\\\Desktop\\\\febi\\\\Catalogo ALTA GAMA\" -Recurse -Force)",
+      "Bash(Select-Object FullName, Length, LastWriteTime)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(grep -o '{\"id\":\"[^\"]*\",\"marca\":\"TEXTAR\"[^}]*}' \"C:\\\\Users\\\\Usuario\\\\Desktop\\\\febi\\\\Catalogo ALTA GAMA\\\\catalogo_febi.html\")",
+      "Bash(powershell *)",
+      "Bash(grep -o '{\"id\":\"[^\"]*\",\"marca\":\"[^BOGAP][^\"]*\"' \"C:\\\\Users\\\\Usuario\\\\Desktop\\\\febi\\\\Catalogo ALTA GAMA\\\\catalogo_febi.html\")",
+      "Bash(grep -o '\\\\{\"[^}]*\"febi[^}]*\"mult\":[^,}]*' -i)",
+      "Bash(awk ' *)"
     ]
   }
 }
