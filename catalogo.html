@@ -800,8 +800,10 @@ button{cursor:pointer;font-family:inherit}
 .order-item-desc{color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .order-item-qty{font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap}
 .order-notes{font-size:12px;color:var(--text2);padding-top:8px;border-top:1px solid var(--border);margin-top:4px;line-height:1.5}
-.chip-orders-btn{background:rgba(204,0,0,.1);border:none;color:var(--red);font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px;cursor:pointer;transition:background .2s;margin:0 4px;font-family:inherit}
+.chip-orders-btn{background:rgba(204,0,0,.1);border:none;color:var(--red);font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px;cursor:pointer;transition:background .2s;margin:0 4px;font-family:inherit;position:relative}
 .chip-orders-btn:hover{background:rgba(204,0,0,.2)}
+.notif-dot{position:absolute;top:-3px;right:-3px;width:9px;height:9px;background:var(--red);border-radius:50%;border:2px solid #fff;animation:notif-pulse 1.2s ease-in-out infinite}
+@keyframes notif-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
 /* ===== ADMIN ORDERS PANEL ===== */
 .admin-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:970;opacity:0;pointer-events:none;transition:opacity .25s}
 .admin-panel-overlay.open{opacity:1;pointer-events:all}
@@ -1749,6 +1751,7 @@ function aplicarSesionCliente(){
       ? '<button class="chip-orders-btn" onclick="openAdminPanel()">&#128230; Pedidos</button>'
       : '<button class="chip-orders-btn" onclick="openOrders()">Mis pedidos</button>';
     area.innerHTML = '<div class="client-logged-chip">&#128100; '+clienteActivo.nombre+ordersBtn+'<span class="logout-x" onclick="logoutCliente()" title="Cerrar sesión">&#215;</span></div>';
+    if(clienteActivo.admin) setTimeout(startAdminNotifications, 500);
   } else {
     area.innerHTML = '<button class="client-login-btn" onclick="abrirLoginCliente()" id="btn-login-cliente">&#128100; Ingresar</button>';
   }
@@ -1756,6 +1759,7 @@ function aplicarSesionCliente(){
 }
 
 function logoutCliente(){
+  stopAdminNotifications();
   clienteActivo = null;
   localStorage.removeItem('febi_sesion_v1');
   CART = [];
@@ -2026,6 +2030,7 @@ var _adminFilter = 'todos';
 
 function openAdminPanel(){
   if(!clienteActivo || !clienteActivo.admin) return;
+  _clearNotifDot();
   document.getElementById('adminPanel').classList.add('open');
   document.getElementById('adminPanelOverlay').classList.add('open');
   loadAllOrders();
@@ -2033,6 +2038,91 @@ function openAdminPanel(){
 function closeAdminPanel(){
   document.getElementById('adminPanel').classList.remove('open');
   document.getElementById('adminPanelOverlay').classList.remove('open');
+}
+
+// ===== ADMIN NOTIFICATIONS =====
+var _lastKnownOrderId = null;
+var _notifInterval = null;
+
+async function startAdminNotifications(){
+  if(!clienteActivo || !clienteActivo.admin) return;
+  if('Notification' in window && Notification.permission === 'default'){
+    await Notification.requestPermission();
+  }
+  var latest = await _fetchLatestOrderId();
+  _lastKnownOrderId = latest;
+  if(_notifInterval) clearInterval(_notifInterval);
+  _notifInterval = setInterval(checkNewOrders, 30000);
+}
+
+function stopAdminNotifications(){
+  if(_notifInterval){ clearInterval(_notifInterval); _notifInterval = null; }
+}
+
+async function _fetchLatestOrderId(){
+  try {
+    var res = await fetch(
+      SUPABASE_URL+'/rest/v1/pedidos?order=id.desc&limit=1&select=id',
+      { headers:{ 'apikey':SUPABASE_ANON, 'Authorization':'Bearer '+SUPABASE_ANON } }
+    );
+    var data = await res.json();
+    return (Array.isArray(data) && data.length) ? data[0].id : 0;
+  } catch(e){ return null; }
+}
+
+async function checkNewOrders(){
+  if(!clienteActivo || !clienteActivo.admin){ stopAdminNotifications(); return; }
+  try {
+    var url = SUPABASE_URL+'/rest/v1/pedidos?order=id.desc&limit=10&select=id,cliente_nombre,total,created_at'
+      +(_lastKnownOrderId !== null ? '&id=gt.'+_lastKnownOrderId : '');
+    var res = await fetch(url, { headers:{ 'apikey':SUPABASE_ANON, 'Authorization':'Bearer '+SUPABASE_ANON } });
+    var nuevos = await res.json();
+    if(!Array.isArray(nuevos) || !nuevos.length) return;
+
+    _lastKnownOrderId = nuevos[0].id;
+    nuevos.forEach(function(o){
+      if('Notification' in window && Notification.permission === 'granted'){
+        new Notification('Nuevo pedido — febi', {
+          body: (o.cliente_nombre||'Cliente')+(Number(o.total)>0 ? ' · $'+Number(o.total).toLocaleString('es-AR') : ''),
+          icon: 'assets/hero/marca.jpg',
+          tag: 'pedido-'+o.id
+        });
+      }
+    });
+    _playNotifSound();
+    _showNotifDot();
+    var panel = document.getElementById('adminPanel');
+    if(panel && panel.classList.contains('open')) loadAllOrders();
+  } catch(e){}
+}
+
+function _playNotifSound(){
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.4);
+  } catch(e){}
+}
+
+function _showNotifDot(){
+  document.querySelectorAll('.chip-orders-btn').forEach(function(b){
+    if(!b.querySelector('.notif-dot')){
+      var dot = document.createElement('span');
+      dot.className = 'notif-dot';
+      b.appendChild(dot);
+    }
+  });
+}
+
+function _clearNotifDot(){
+  document.querySelectorAll('.notif-dot').forEach(function(d){ d.remove(); });
 }
 
 async function loadAllOrders(){
