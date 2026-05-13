@@ -765,6 +765,43 @@ button{cursor:pointer;font-family:inherit}
 .checkout-success .ok-icon{font-size:52px;margin-bottom:14px}
 .checkout-success h4{font-size:20px;font-weight:800;margin-bottom:8px}
 .checkout-success p{color:var(--text2);font-size:14px;line-height:1.6}
+/* ===== ORDERS PANEL ===== */
+.orders-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:950;opacity:0;pointer-events:none;transition:opacity var(--transition)}
+.orders-overlay.open{opacity:1;pointer-events:all}
+.orders-sidebar{position:fixed;top:0;right:0;bottom:0;width:100vw;background:#fff;z-index:960;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,.12)}
+@media(min-width:480px){.orders-sidebar{width:420px;max-width:100vw}}
+.orders-sidebar.open{transform:translateX(0)}
+.orders-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.orders-header h3{font-size:18px;font-weight:800}
+.orders-close{background:none;border:none;font-size:26px;cursor:pointer;color:var(--text2);line-height:1;padding:4px 8px}
+.orders-list{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.orders-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);gap:12px;font-size:14px;text-align:center;padding:40px 20px;line-height:1.6}
+.order-card{background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+.order-card-head{padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;cursor:pointer;user-select:none}
+.order-card-head:active{background:rgba(0,0,0,.03)}
+.order-card-info{flex:1;min-width:0}
+.order-num{font-size:11px;color:var(--red);font-weight:700;margin-bottom:5px;letter-spacing:.3px}
+.order-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;row-gap:6px}
+.order-total{font-size:15px;font-weight:800;color:var(--text)}
+.order-items-count{font-size:12px;color:var(--text2)}
+.order-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.order-status.pendiente{background:rgba(245,158,11,.12);color:#B45309}
+.order-status.confirmado{background:rgba(59,130,246,.12);color:#1D4ED8}
+.order-status.preparando,.order-status.en_preparacion{background:rgba(249,115,22,.12);color:#C2410C}
+.order-status.enviado{background:rgba(139,92,246,.12);color:#6D28D9}
+.order-status.entregado{background:rgba(22,163,74,.12);color:#15803D}
+.order-status.cancelado{background:rgba(204,0,0,.1);color:var(--red)}
+.order-toggle{font-size:16px;color:var(--text3);transition:transform .2s;line-height:1;flex-shrink:0;padding-top:3px}
+.order-card.expanded .order-toggle{transform:rotate(180deg)}
+.order-items-detail{display:none;padding:0 16px 14px;border-top:1px solid var(--border)}
+.order-card.expanded .order-items-detail{display:block}
+.order-item-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px}
+.order-item-row:last-of-type{border-bottom:none}
+.order-item-desc{color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.order-item-qty{font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap}
+.order-notes{font-size:12px;color:var(--text2);padding-top:8px;border-top:1px solid var(--border);margin-top:4px;line-height:1.5}
+.chip-orders-btn{background:rgba(204,0,0,.1);border:none;color:var(--red);font-size:11px;font-weight:700;padding:3px 9px;border-radius:10px;cursor:pointer;transition:background .2s;margin:0 4px;font-family:inherit}
+.chip-orders-btn:hover{background:rgba(204,0,0,.2)}
 #client-login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:250;display:none;align-items:center;justify-content:center;padding:16px}
 #client-login-overlay.show{display:flex}
 .client-login-box{background:#fff;border-radius:16px;width:100%;max-width:400px;padding:36px 32px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
@@ -1665,7 +1702,7 @@ function aplicarSesionCliente(){
   var area = document.getElementById('nav-client-area');
   if(!area) return;
   if(clienteActivo){
-    area.innerHTML = '<div class="client-logged-chip">&#128100; '+clienteActivo.nombre+'<span class="logout-x" onclick="logoutCliente()" title="Cerrar sesión">&#215;</span></div>';
+    area.innerHTML = '<div class="client-logged-chip">&#128100; '+clienteActivo.nombre+'<button class="chip-orders-btn" onclick="openOrders()">Mis pedidos</button><span class="logout-x" onclick="logoutCliente()" title="Cerrar sesión">&#215;</span></div>';
   } else {
     area.innerHTML = '<button class="client-login-btn" onclick="abrirLoginCliente()" id="btn-login-cliente">&#128100; Ingresar</button>';
   }
@@ -1863,6 +1900,80 @@ function openCheckout(){
 }
 function closeCheckout(){ document.getElementById('checkoutOverlay').classList.remove('open'); }
 
+// ===== ORDERS PANEL =====
+function openOrders(){
+  document.getElementById('ordersSidebar').classList.add('open');
+  document.getElementById('ordersOverlay').classList.add('open');
+  loadOrders();
+}
+function closeOrders(){
+  document.getElementById('ordersSidebar').classList.remove('open');
+  document.getElementById('ordersOverlay').classList.remove('open');
+}
+
+async function loadOrders(){
+  const listEl = document.getElementById('ordersList');
+  listEl.innerHTML = '<div class="orders-empty" style="display:flex"><span style="font-size:36px">&#8987;</span><span>Cargando pedidos...</span></div>';
+  if(!clienteActivo){ closeOrders(); return; }
+  const tel = clienteActivo.telefono || clienteActivo.tel || clienteActivo.usuario || '';
+  try {
+    const res = await fetch(
+      SUPABASE_URL+'/rest/v1/pedidos?cliente_tel=eq.'+encodeURIComponent(tel)+'&order=created_at.desc&limit=50',
+      { headers:{ 'apikey':SUPABASE_ANON, 'Authorization':'Bearer '+SUPABASE_ANON } }
+    );
+    const orders = await res.json();
+    renderOrders(orders);
+  } catch(e){
+    listEl.innerHTML = '<div class="orders-empty" style="display:flex"><span style="font-size:32px">&#9888;&#65039;</span><span>Error al cargar. Revisá tu conexión.</span></div>';
+  }
+}
+
+function renderOrders(orders){
+  const listEl = document.getElementById('ordersList');
+  if(!Array.isArray(orders) || !orders.length){
+    listEl.innerHTML = '<div class="orders-empty" style="display:flex"><span style="font-size:40px">&#128230;</span><span>Todavía no hiciste ningún pedido.<br>¡Explorá el catálogo!</span></div>';
+    return;
+  }
+  const statusLabel = {
+    pendiente:'Pendiente', confirmado:'Confirmado', preparando:'Preparando',
+    en_preparacion:'En preparación', enviado:'Enviado', entregado:'Entregado', cancelado:'Cancelado'
+  };
+  listEl.innerHTML = orders.map(function(o, idx){
+    const fecha = new Date(o.created_at).toLocaleDateString('es-AR',{day:'numeric',month:'short',year:'numeric'});
+    var items = [];
+    try{ items = JSON.parse(o.items||'[]'); }catch(e){}
+    const itemCount = items.reduce(function(s,i){return s+(i.qty||1);},0);
+    const estado = (o.estado||'pendiente').toLowerCase();
+    const label = statusLabel[estado] || o.estado || 'Pendiente';
+    const hasPrecio = Number(o.total) > 0;
+    return '<div class="order-card" id="ocard-'+idx+'">'
+      +'<div class="order-card-head" onclick="toggleOrderDetail('+idx+')">'
+      +'<div class="order-card-info">'
+      +'<div class="order-num">'+fecha+'</div>'
+      +'<div class="order-meta">'
+      +'<span class="order-total">'+(hasPrecio ? '$'+Number(o.total).toLocaleString('es-AR') : 'Precio a confirmar')+'</span>'
+      +'<span class="order-items-count">'+itemCount+' art'+(itemCount!==1?'s':'')+'</span>'
+      +'<span class="order-status '+estado+'">'+label+'</span>'
+      +'</div></div>'
+      +'<span class="order-toggle">&#9660;</span>'
+      +'</div>'
+      +'<div class="order-items-detail">'
+      +items.map(function(i){
+        return '<div class="order-item-row">'
+          +'<span class="order-item-desc">febi #'+i.id+' &mdash; '+(i.desc||'')+'</span>'
+          +'<span class="order-item-qty">&#215;'+i.qty+'</span>'
+          +'</div>';
+      }).join('')
+      +(o.notas ? '<div class="order-notes">&#128221; '+o.notas+'</div>' : '')
+      +'</div></div>';
+  }).join('');
+}
+
+function toggleOrderDetail(idx){
+  var card = document.getElementById('ocard-'+idx);
+  if(card) card.classList.toggle('expanded');
+}
+
 async function submitOrder(){
   const nombre = document.getElementById('co-nombre').value.trim();
   const tel = document.getElementById('co-tel').value.trim();
@@ -2025,6 +2136,21 @@ async function doLoginCliente(){
       <h4>¡Pedido recibido!</h4>
       <p>Te contactamos por WhatsApp o teléfono en las próximas horas para confirmar disponibilidad y precio final.</p>
       <button class="co-submit" style="margin-top:20px" onclick="closeCheckout()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDERS PANEL -->
+<div class="orders-overlay" id="ordersOverlay" onclick="closeOrders()"></div>
+<div class="orders-sidebar" id="ordersSidebar">
+  <div class="orders-header">
+    <h3>&#128230; Mis pedidos</h3>
+    <button class="orders-close" onclick="closeOrders()">&#215;</button>
+  </div>
+  <div class="orders-list" id="ordersList">
+    <div class="orders-empty" style="display:flex">
+      <span style="font-size:36px">&#8987;</span>
+      <span>Cargando pedidos...</span>
     </div>
   </div>
 </div>
