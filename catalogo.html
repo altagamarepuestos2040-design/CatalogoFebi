@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 /* ===== RESET & BASE ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -819,6 +820,43 @@ button{cursor:pointer;font-family:inherit}
 .admin-tab{background:none;border:1.5px solid var(--border);color:var(--text2);font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .2s;flex-shrink:0}
 .admin-tab.active{background:var(--red);border-color:var(--red);color:#fff}
 .admin-orders-list{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+/* ── FEBI MAIN TABS (Pedidos | Precios) ── */
+.febi-main-tabs{display:flex;gap:0;border-bottom:2px solid #E5E7EB;flex-shrink:0}
+.febi-main-tab{padding:10px 20px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border:none;background:none;color:#9CA3AF;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.febi-main-tab:hover{color:#374151}
+.febi-main-tab.active{color:#CC0000;border-bottom-color:#CC0000}
+/* ── PRICE MANAGER ── */
+.pm-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;padding:14px 16px;background:#F8FAFC;border-radius:10px;border:1px solid #E5E7EB}
+.pm-toolbar-title{font-size:14px;font-weight:800;color:#1A1A1A;margin-right:8px}
+.pm-search{padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:inherit;outline:none;min-width:200px}
+.pm-search:focus{border-color:#CC0000}
+.pm-filter-sel{padding:7px 10px;border:1.5px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;outline:none;cursor:pointer;color:#374151}
+.pm-filter-sel:focus{border-color:#CC0000}
+.pm-btn{padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.pm-btn-primary{background:#CC0000;color:#fff}.pm-btn-primary:hover{background:#A00000}
+.pm-btn-secondary{background:#F3F4F6;color:#374151;border:1px solid #E5E7EB}.pm-btn-secondary:hover{background:#E5E7EB}
+.pm-btn-green{background:#059669;color:#fff}.pm-btn-green:hover{background:#047857}
+.pm-bulk-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:12px 14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px}
+.pm-bulk-label{font-size:13px;font-weight:700;color:#92400E}
+.pm-bulk-input{padding:6px 10px;border:1.5px solid #FDE68A;border-radius:6px;font-size:13px;width:90px;font-family:inherit;outline:none}
+.pm-stats{font-size:12px;color:#6B7280;margin-bottom:10px}
+.pm-stats strong{color:#1A1A1A}
+.pm-table-wrap{overflow-x:auto;border:1px solid #E5E7EB;border-radius:10px}
+.pm-table{width:100%;border-collapse:collapse;font-size:13px}
+.pm-table th{background:#F3F4F6;color:#6B7280;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;text-align:left;border-bottom:2px solid #E5E7EB;position:sticky;top:0}
+.pm-table td{padding:7px 12px;border-bottom:1px solid #F3F4F6;color:#1A1A1A;vertical-align:middle}
+.pm-table tr:last-child td{border-bottom:none}
+.pm-table tr:hover td{background:#FAFAFA}
+.pm-table tr.edited td{background:#FFFBEB}
+.pm-table .pm-id{font-family:monospace;font-weight:700;font-size:12px;color:#CC0000}
+.pm-price-input{width:110px;padding:5px 8px;border:1.5px solid #E5E7EB;border-radius:6px;font-size:13px;font-weight:700;font-family:inherit;color:#059669;text-align:right;outline:none;transition:border-color .15s}
+.pm-price-input:focus{border-color:#059669;background:#F0FDF4}
+.pm-price-input.changed{border-color:#D97706;background:#FFFBEB;color:#92400E}
+.pm-save-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#F0FDF4;border-top:2px solid #A7F3D0;flex-shrink:0}
+.pm-save-info{font-size:13px;color:#065F46}
+.pm-save-info strong{font-size:15px;color:#059669}
+.pm-toast{position:fixed;bottom:80px;right:24px;background:#059669;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+.pm-toast.show{transform:translateY(0);opacity:1}
 .admin-order-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s}
 .admin-order-card:hover{border-color:#ccc}
 .admin-order-head{padding:13px 14px;cursor:pointer;user-select:none}
@@ -1679,6 +1717,29 @@ var SUPABASE_URL  = 'https://psdrpdtvokvylupouyhs.supabase.co';
 var SUPABASE_ANON = 'sb_publishable_y-kO0f1jtl1uDdX2Hpw2YA_HjDUd78R';
 var SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbygBGDEJOblVEJwMr5OI00e2PQC_z2OSbCVP7J5b0KcgXzgv0uZSx0znVx9KzUVTlqIow/exec';
 
+// ── PRECIOS DESDE SUPABASE ─────────────────────────────────────────────────
+async function cargarPreciosSupabase(){
+  try {
+    var token = localStorage.getItem('febi_admin_token_v1');
+    var rpcName = token ? 'get_precios_auth' : 'get_precios_public';
+    var body = token ? JSON.stringify({p_token: token}) : '{}';
+    var res = await fetch(SUPABASE_URL+'/rest/v1/rpc/'+rpcName, {
+      method: 'POST',
+      headers: {'apikey': SUPABASE_ANON, 'Authorization': 'Bearer '+SUPABASE_ANON, 'Content-Type': 'application/json'},
+      body: body
+    });
+    if(!res.ok) return;
+    var precios = await res.json();
+    if(!precios || typeof precios !== 'object') return;
+    // Superponer precios actualizados sobre allProducts
+    allProducts.forEach(function(p){
+      var v = precios[p.id] || precios[String(parseInt(p.id,10))];
+      if(v != null) p.precio = Number(v);
+    });
+    renderProducts();
+  } catch(e){ console.warn('cargarPreciosSupabase:', e); }
+}
+
 async function sha256hex(msg){
   const buf = new TextEncoder().encode(msg);
   const hash = await crypto.subtle.digest('SHA-256', buf);
@@ -1740,7 +1801,7 @@ var clienteActivo = (function(){
   return null;
 })();
 
-if(clienteActivo){ setTimeout(aplicarSesionCliente, 100); }
+if(clienteActivo){ setTimeout(aplicarSesionCliente, 100); setTimeout(cargarPreciosSupabase, 500); }
 if(cacheVencido()){ sincronizarClientes(); }
 
 function aplicarSesionCliente(){
@@ -1762,6 +1823,7 @@ function logoutCliente(){
   stopAdminNotifications();
   clienteActivo = null;
   localStorage.removeItem('febi_sesion_v1');
+  localStorage.removeItem('febi_admin_token_v1');
   CART = [];
   saveCart();
   renderCart();
@@ -2327,9 +2389,11 @@ async function doLoginCliente(){
     if(ad && ad.ok){
       clienteActivo = {nombre: ad.nombre||u, usuario:u, admin:true};
       localStorage.setItem('febi_sesion_v1', JSON.stringify(clienteActivo));
+      if(ad.token) localStorage.setItem('febi_admin_token_v1', ad.token);
       btn.textContent='Ingresar al catálogo'; btn.disabled=false;
       cerrarLoginCliente();
       aplicarSesionCliente();
+      cargarPreciosSupabase();
       return;
     }
   }catch(e){}
@@ -2349,12 +2413,267 @@ async function doLoginCliente(){
     localStorage.setItem('febi_sesion_v1', JSON.stringify(found));
     cerrarLoginCliente();
     aplicarSesionCliente();
+    cargarPreciosSupabase();
   } else {
     var errEl = document.getElementById('cl-err');
     errEl.textContent = CLIENTES.length===0 ? 'Sin conexión. Reintentá en unos segundos.' : 'Usuario o contraseña incorrectos.';
     errEl.style.display='block';
   }
 }
+
+// ── PRICE MANAGER ──────────────────────────────────────────────────────────
+var GH_OWNER_FEBI = 'altagamarepuestos2040-design';
+var GH_REPO_FEBI  = 'CatalogoFebi';
+var GH_BRANCH_FEBI = 'main';
+
+function esc(s){ var d=document.createElement('div'); d.textContent=String(s||''); return d.innerHTML; }
+
+function pmToast(msg){
+  var t=document.getElementById('febi-pm-toast');
+  if(!t){ t=document.createElement('div'); t.id='febi-pm-toast'; t.className='pm-toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+function ghGetTokenFebi(){ return localStorage.getItem('gh_token_febi')||''; }
+function ghSetTokenFebi(t){ localStorage.setItem('gh_token_febi', t.trim()); }
+
+async function ghPublicarArchivoFebi(filename, textContent, mensaje){
+  var token = ghGetTokenFebi();
+  if(!token){ pmToast('⚙ Configurá el token de GitHub primero'); return false; }
+  try{
+    var sha = null;
+    var r = await fetch('https://api.github.com/repos/'+GH_OWNER_FEBI+'/'+GH_REPO_FEBI+'/contents/'+filename+'?ref='+GH_BRANCH_FEBI,{
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}
+    });
+    if(r.ok){ var d=await r.json(); sha=d.sha; }
+    var encoded = btoa(unescape(encodeURIComponent(textContent)));
+    var body = {message:mensaje, content:encoded, branch:GH_BRANCH_FEBI};
+    if(sha) body.sha=sha;
+    var r2 = await fetch('https://api.github.com/repos/'+GH_OWNER_FEBI+'/'+GH_REPO_FEBI+'/contents/'+filename,{
+      method:'PUT',
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    if(!r2.ok){ var err=await r2.json(); throw new Error(err.message||'Error al publicar'); }
+    return true;
+  } catch(e){ pmToast('⚠ GitHub: '+e.message); return false; }
+}
+
+async function sincronizarPreciosSupabaseFebi(preciosObj){
+  var token = localStorage.getItem('febi_admin_token_v1');
+  if(!token) return false;
+  try{
+    var r = await fetch(SUPABASE_URL+'/rest/v1/rpc/update_precios_auth',{
+      method:'POST',
+      headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({p_token:token, p_precios:preciosObj})
+    });
+    var d = await r.json();
+    return d && d.ok;
+  } catch(e){ return false; }
+}
+
+var pmEdits = {};
+var pmFiltrados = [];
+
+function pmGetPrecio(id){
+  if(pmEdits.hasOwnProperty(id)) return pmEdits[id];
+  var p = allProducts.find(function(x){ return x.id===id || x.id===String(parseInt(id,10)); });
+  return p ? (p.precio||0) : 0;
+}
+
+function febiSwitchMainTab(tab){
+  var panelPed = document.getElementById('febi-panel-pedidos');
+  var panelPre = document.getElementById('febi-panel-precios');
+  var tabPed = document.getElementById('febi-main-tab-ped');
+  var tabPre = document.getElementById('febi-main-tab-pre');
+  var refreshBtn = document.getElementById('admin-refresh-btn');
+  if(tab==='pedidos'){
+    panelPed.style.display='flex'; panelPre.style.display='none';
+    tabPed.classList.add('active'); tabPre.classList.remove('active');
+    if(refreshBtn) refreshBtn.style.display='';
+  } else {
+    panelPed.style.display='none'; panelPre.style.display='block';
+    tabPed.classList.remove('active'); tabPre.classList.add('active');
+    if(refreshBtn) refreshBtn.style.display='none';
+    pmInicializar();
+  }
+}
+
+function pmInicializar(){
+  var cats=[], seen={};
+  allProducts.forEach(function(a){ if(!seen[a.cat]){ seen[a.cat]=1; cats.push(a.cat); } });
+  cats.sort();
+  var sel=document.getElementById('febi-pm-fcat');
+  if(!sel) return;
+  sel.innerHTML='<option value="">Todas las categorías</option>';
+  cats.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+  pmFilter();
+}
+
+function pmFilter(){
+  var q=(document.getElementById('febi-pm-q').value||'').toLowerCase();
+  var fcat=document.getElementById('febi-pm-fcat').value;
+  pmFiltrados=allProducts.filter(function(a){
+    if(fcat && a.cat!==fcat) return false;
+    if(q && a.id.toLowerCase().indexOf(q)<0 && (a.desc||'').toLowerCase().indexOf(q)<0) return false;
+    return true;
+  });
+  document.getElementById('febi-pm-stats').innerHTML=
+    'Mostrando <strong>'+pmFiltrados.length+'</strong> de <strong>'+allProducts.length+'</strong> artículos';
+  pmRender();
+}
+
+function pmRender(){
+  var tbody=document.getElementById('febi-pm-tbody');
+  if(!tbody) return;
+  tbody.innerHTML='';
+  var frag=document.createDocumentFragment();
+  pmFiltrados.forEach(function(a){
+    var tr=document.createElement('tr');
+    var precioActual=pmGetPrecio(a.id);
+    var changed=pmEdits.hasOwnProperty(a.id);
+    if(changed) tr.classList.add('edited');
+    tr.innerHTML=
+      '<td><span class="pm-id">'+esc(a.id)+'</span></td>'+
+      '<td>'+esc(a.desc||'')+'</td>'+
+      '<td>'+esc(a.cat||'')+'</td>'+
+      '<td style="text-align:right">'+
+        '<input type="number" class="pm-price-input'+(changed?' changed':'')+'" '+
+        'value="'+(precioActual||0)+'" min="0" step="1" '+
+        'data-id="'+esc(a.id)+'" '+
+        'onchange="pmOnChange(this)" oninput="pmOnChange(this)">'+
+      '</td>';
+    frag.appendChild(tr);
+  });
+  tbody.appendChild(frag);
+  pmActualizarBarraGuardar();
+}
+
+function pmOnChange(input){
+  var id=input.dataset.id;
+  pmEdits[id]=parseFloat(input.value)||0;
+  input.classList.add('changed');
+  var tr=input.closest('tr'); if(tr) tr.classList.add('edited');
+  pmActualizarBarraGuardar();
+}
+
+function pmActualizarBarraGuardar(){
+  var n=Object.keys(pmEdits).length;
+  var bar=document.getElementById('pm-save-bar');
+  var cnt=document.getElementById('pm-changed-count');
+  if(bar) bar.style.display=n>0?'flex':'none';
+  if(cnt) cnt.textContent=n;
+}
+
+function pmGuardar(){
+  allProducts.forEach(function(p){
+    if(pmEdits.hasOwnProperty(p.id)) p.precio=pmEdits[p.id];
+  });
+  pmEdits={};
+  pmRender();
+  if(typeof renderProducts==='function') renderProducts();
+  pmToast('💾 Precios guardados correctamente');
+}
+
+function pmDescartar(){ pmEdits={}; pmRender(); }
+
+function pmAjustePct(){
+  var pct=parseFloat(document.getElementById('febi-pm-bulk-pct').value);
+  if(isNaN(pct)){ alert('Ingresá un porcentaje válido'); return; }
+  pmFiltrados.forEach(function(a){
+    pmEdits[a.id]=Math.round(pmGetPrecio(a.id)*(1+pct/100));
+  });
+  pmRender();
+  pmToast('Ajuste '+(pct>0?'+':'')+pct+'% aplicado a '+pmFiltrados.length+' artículos');
+}
+
+function pmSetPrecioFijo(){
+  var precio=parseFloat(document.getElementById('febi-pm-bulk-precio').value);
+  if(isNaN(precio)||precio<0){ alert('Ingresá un precio válido'); return; }
+  pmFiltrados.forEach(function(a){ pmEdits[a.id]=precio; });
+  pmRender();
+  pmToast('Precio $'+precio.toLocaleString('es-AR')+' fijado a '+pmFiltrados.length+' artículos');
+}
+
+async function pmPublicarEnWeb(){
+  pmGuardar();
+  pmToast('⏳ Publicando precios...');
+  var preciosObj={};
+  allProducts.forEach(function(p){ if(p.precio) preciosObj[p.id]=p.precio; });
+  var jsonContent=JSON.stringify(preciosObj);
+  var results=await Promise.all([
+    ghPublicarArchivoFebi('precios.json', jsonContent, 'Actualización de precios'),
+    sincronizarPreciosSupabaseFebi(preciosObj)
+  ]);
+  if(results[0]) pmToast('✅ Precios publicados. Se verán en la web en ~2 minutos.');
+  else pmToast('⚠ Error al publicar. Verificá el token de GitHub.');
+}
+
+function pmExportarExcel(){
+  if(typeof XLSX==='undefined'){ pmToast('⚠ Librería Excel no cargada. Verificá la conexión.'); return; }
+  var wsData=[['Código','Descripción','Categoría','Precio (ARS)','NOTA: Solo modificar la columna Precio']];
+  allProducts.forEach(function(a){
+    wsData.push([a.id, a.desc||'', a.cat||'', a.precio?Number(a.precio):'']);
+  });
+  var ws=XLSX.utils.aoa_to_sheet(wsData);
+  allProducts.forEach(function(a,idx){
+    var cellRef=XLSX.utils.encode_cell({r:idx+1,c:0});
+    if(ws[cellRef]){ ws[cellRef].t='s'; ws[cellRef].v=String(a.id); delete ws[cellRef].z; }
+  });
+  ws['!cols']=[{wch:15},{wch:50},{wch:22},{wch:15},{wch:45}];
+  var wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Precios');
+  XLSX.writeFile(wb,'precios_febi.xlsx');
+  pmToast('↓ Excel descargado con todos los precios');
+}
+
+function pmImportarExcel(input){
+  var file=input.files[0]; if(!file) return;
+  if(typeof XLSX==='undefined'){ pmToast('⚠ Librería Excel no cargada.'); return; }
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var wb=XLSX.read(e.target.result,{type:'array'});
+      var ws=wb.Sheets[wb.SheetNames[0]];
+      var rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+      var count=0;
+      rows.forEach(function(row,idx){
+        if(idx===0) return;
+        var id=String(row[0]).trim();
+        var precio=parseFloat(String(row[3]).replace(/[^0-9.]/g,''));
+        if(id && !isNaN(precio) && precio>0){ pmEdits[id]=precio; count++; }
+      });
+      pmRender();
+      pmToast('↑ '+count+' precios importados. Hacé clic en "Publicar en web".');
+    } catch(err){ pmToast('⚠ Error al leer el archivo: '+err.message); }
+  };
+  reader.readAsArrayBuffer(file);
+  input.value='';
+}
+
+function pmRenderConfigGH(){
+  var t=ghGetTokenFebi();
+  var el=document.getElementById('febi-gh-config');
+  if(!el) return;
+  el.innerHTML='<div style="padding:16px;max-width:560px">'
+    +'<p style="font-size:13px;color:#555;margin-bottom:10px">El token permite publicar el archivo <code>precios.json</code> en GitHub automáticamente.</p>'
+    +'<label style="font-size:13px;font-weight:600;display:block;margin-bottom:6px">Token de acceso personal GitHub:</label>'
+    +'<div style="display:flex;gap:8px;align-items:center">'
+    +'<input type="password" id="febi-gh-token-input" value="'+t+'" placeholder="ghp_xxxxxxxxxxxx" style="flex:1;padding:8px 12px;border:1px solid #D1D5DB;border-radius:8px;font-size:13px;font-family:monospace">'
+    +'<button class="pm-btn pm-btn-green" onclick="ghGuardarTokenFebi()">💾 Guardar</button>'
+    +'</div>'
+    +(t?'<p style="font-size:12px;color:#059669;margin-top:8px">✅ Token configurado</p>':'<p style="font-size:12px;color:#DC2626;margin-top:8px">⚠ Sin token — los cambios no se publicarán en GitHub</p>')
+    +'</div>';
+}
+
+function ghGuardarTokenFebi(){
+  var t=document.getElementById('febi-gh-token-input').value.trim();
+  ghSetTokenFebi(t); pmRenderConfigGH(); pmToast('✅ Token guardado');
+}
+// ── FIN PRICE MANAGER ──────────────────────────────────────────────────────
 </script>
 <!-- CART FAB -->
 <button class="cart-fab" onclick="toggleCart()" title="Ver pedido">
@@ -2421,27 +2740,79 @@ async function doLoginCliente(){
   </div>
 </div>
 
-<!-- ADMIN ORDERS PANEL -->
+<!-- ADMIN PANEL -->
 <div class="admin-panel-overlay" id="adminPanelOverlay" onclick="closeAdminPanel()"></div>
 <div class="admin-panel" id="adminPanel">
   <div class="admin-panel-header">
-    <h3>&#128230; Panel de pedidos</h3>
+    <h3>&#9881; Panel de administración</h3>
     <div style="display:flex;align-items:center;gap:8px">
-      <button class="admin-refresh-btn" onclick="loadAllOrders()">&#8635; Actualizar</button>
+      <button class="admin-refresh-btn" id="admin-refresh-btn" onclick="loadAllOrders()">&#8635; Actualizar</button>
       <button class="admin-panel-close" onclick="closeAdminPanel()">&#215;</button>
     </div>
   </div>
-  <div class="admin-tabs" id="adminTabs">
-    <button class="admin-tab active" onclick="filterAdminOrders('todos',this)">Todos</button>
-    <button class="admin-tab" onclick="filterAdminOrders('pendiente',this)">Pendientes</button>
-    <button class="admin-tab" onclick="filterAdminOrders('confirmado',this)">Confirmados</button>
-    <button class="admin-tab" onclick="filterAdminOrders('preparando',this)">Preparando</button>
-    <button class="admin-tab" onclick="filterAdminOrders('enviado',this)">Enviados</button>
-    <button class="admin-tab" onclick="filterAdminOrders('entregado',this)">Entregados</button>
-    <button class="admin-tab" onclick="filterAdminOrders('cancelado',this)">Cancelados</button>
+  <!-- Tabs principales -->
+  <div class="febi-main-tabs">
+    <button class="febi-main-tab active" id="febi-main-tab-ped" onclick="febiSwitchMainTab('pedidos')">&#128230; Pedidos</button>
+    <button class="febi-main-tab" id="febi-main-tab-pre" onclick="febiSwitchMainTab('precios')">&#128176; Precios</button>
   </div>
-  <div class="admin-orders-list" id="adminOrdersList">
-    <div class="orders-empty" style="display:flex"><span style="font-size:32px">&#8987;</span><span>Cargando pedidos...</span></div>
+  <!-- Panel Pedidos -->
+  <div id="febi-panel-pedidos" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+    <div class="admin-tabs" id="adminTabs">
+      <button class="admin-tab active" onclick="filterAdminOrders('todos',this)">Todos</button>
+      <button class="admin-tab" onclick="filterAdminOrders('pendiente',this)">Pendientes</button>
+      <button class="admin-tab" onclick="filterAdminOrders('confirmado',this)">Confirmados</button>
+      <button class="admin-tab" onclick="filterAdminOrders('preparando',this)">Preparando</button>
+      <button class="admin-tab" onclick="filterAdminOrders('enviado',this)">Enviados</button>
+      <button class="admin-tab" onclick="filterAdminOrders('entregado',this)">Entregados</button>
+      <button class="admin-tab" onclick="filterAdminOrders('cancelado',this)">Cancelados</button>
+    </div>
+    <div class="admin-orders-list" id="adminOrdersList">
+      <div class="orders-empty" style="display:flex"><span style="font-size:32px">&#8987;</span><span>Cargando pedidos...</span></div>
+    </div>
+  </div>
+  <!-- Panel Precios -->
+  <div id="febi-panel-precios" style="display:none;flex:1;overflow-y:auto;padding:16px">
+    <div class="pm-toolbar">
+      <span class="pm-toolbar-title">&#128176; Gestión de Precios</span>
+      <input type="text" class="pm-search" id="febi-pm-q" placeholder="&#128269; Buscar código o descripción..." oninput="pmFilter()">
+      <select class="pm-filter-sel" id="febi-pm-fcat" onchange="pmFilter()"><option value="">Todas las categorías</option></select>
+      <button class="pm-btn pm-btn-primary" onclick="pmGuardar()">&#128190; Guardar cambios</button>
+      <button class="pm-btn pm-btn-green" onclick="pmPublicarEnWeb()">&#127760; Publicar en web</button>
+      <button class="pm-btn pm-btn-secondary" onclick="pmExportarExcel()">&#8595; Descargar Excel</button>
+      <button class="pm-btn pm-btn-secondary" onclick="document.getElementById('febi-pm-import').click()">&#8593; Importar Excel</button>
+      <input type="file" id="febi-pm-import" accept=".xlsx,.xls" style="display:none" onchange="pmImportarExcel(this)">
+    </div>
+    <div class="pm-bulk-bar">
+      <span class="pm-bulk-label">&#9889; Ajuste masivo a artículos filtrados:</span>
+      <input type="number" class="pm-bulk-input" id="febi-pm-bulk-pct" placeholder="%" min="-99" max="999" step="1">
+      <button class="pm-btn pm-btn-secondary" onclick="pmAjustePct()">Aplicar % a filtrados</button>
+      <span style="color:#92400E;font-size:12px;margin:0 4px">|</span>
+      <input type="number" class="pm-bulk-input" id="febi-pm-bulk-precio" placeholder="$ importe" min="0" step="1">
+      <button class="pm-btn pm-btn-secondary" onclick="pmSetPrecioFijo()">Fijar precio a filtrados</button>
+    </div>
+    <div class="pm-stats" id="febi-pm-stats"></div>
+    <div class="pm-table-wrap">
+      <table class="pm-table">
+        <thead><tr>
+          <th>Código</th><th>Descripción</th><th>Categoría</th>
+          <th style="text-align:right">Precio (ARS)</th>
+        </tr></thead>
+        <tbody id="febi-pm-tbody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;padding:14px;background:#F8FAFC;border:1px solid #E5E7EB;border-radius:10px">
+      <div style="font-size:13px;font-weight:700;margin-bottom:10px">&#9881; Token GitHub (para publicar en web)</div>
+      <div id="febi-gh-config"></div>
+      <script>document.addEventListener('DOMContentLoaded', pmRenderConfigGH);</script>
+    </div>
+  </div>
+  <!-- Barra guardar -->
+  <div class="pm-save-bar" id="pm-save-bar" style="display:none">
+    <span class="pm-save-info">&#128293; <strong id="pm-changed-count">0</strong> precios modificados sin guardar</span>
+    <div style="display:flex;gap:10px">
+      <button class="pm-btn pm-btn-secondary" onclick="pmDescartar()">Descartar</button>
+      <button class="pm-btn pm-btn-green" onclick="pmGuardar()">&#128190; Guardar todo</button>
+    </div>
   </div>
 </div>
 
