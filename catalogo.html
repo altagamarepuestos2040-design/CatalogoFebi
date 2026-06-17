@@ -1718,6 +1718,21 @@ var SUPABASE_ANON = 'sb_publishable_y-kO0f1jtl1uDdX2Hpw2YA_HjDUd78R';
 var SCRIPT_URL    = 'https://script.google.com/macros/s/AKfycbygBGDEJOblVEJwMr5OI00e2PQC_z2OSbCVP7J5b0KcgXzgv0uZSx0znVx9KzUVTlqIow/exec';
 
 // ── PRECIOS DESDE SUPABASE ─────────────────────────────────────────────────
+async function cargarPreciosJson(){
+  try {
+    var url = 'https://altagamarepuestos2040-design.github.io/CatalogoFebi/precios.json?t='+Date.now();
+    var res = await fetch(url);
+    if(!res.ok) return;
+    var precios = await res.json();
+    if(!precios || typeof precios !== 'object') return;
+    allProducts.forEach(function(p){
+      var v = precios[p.id] || precios[String(parseInt(p.id,10))];
+      if(v != null) p.precio = Number(v);
+    });
+    renderProducts();
+  } catch(e){ console.warn('cargarPreciosJson:', e); }
+}
+
 async function cargarPreciosSupabase(){
   try {
     var token = localStorage.getItem('febi_admin_token_v1');
@@ -1731,7 +1746,6 @@ async function cargarPreciosSupabase(){
     if(!res.ok) return;
     var precios = await res.json();
     if(!precios || typeof precios !== 'object') return;
-    // Superponer precios actualizados sobre allProducts
     allProducts.forEach(function(p){
       var v = precios[p.id] || precios[String(parseInt(p.id,10))];
       if(v != null) p.precio = Number(v);
@@ -1801,7 +1815,8 @@ var clienteActivo = (function(){
   return null;
 })();
 
-if(clienteActivo){ setTimeout(aplicarSesionCliente, 100); setTimeout(cargarPreciosSupabase, 500); }
+setTimeout(cargarPreciosJson, 300);
+if(clienteActivo){ setTimeout(aplicarSesionCliente, 100); setTimeout(cargarPreciosSupabase, 800); }
 if(cacheVencido()){ sincronizarClientes(); }
 
 function aplicarSesionCliente(){
