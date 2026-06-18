@@ -1291,6 +1291,7 @@ async function loadCatalog() {
     filteredProducts = [...allProducts];
     buildCats();
     initFilters();
+    await cargarPreciosJson();
     renderProducts();
     buildHeroCats();
     animateCounter(allProducts.length);
@@ -1815,7 +1816,6 @@ var clienteActivo = (function(){
   return null;
 })();
 
-setTimeout(cargarPreciosJson, 300);
 if(clienteActivo){ setTimeout(aplicarSesionCliente, 100); setTimeout(cargarPreciosSupabase, 800); }
 if(cacheVencido()){ sincronizarClientes(); }
 
