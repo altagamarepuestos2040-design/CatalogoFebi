@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa de Talleres y Casas de Repuestos</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  :root {
+    --gris: #9e9e9e;
+    --amarillo: #fbc02d;
+    --verde: #43a047;
+    --azul: #1565c0;
+    --borde: #ddd;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: #f5f5f5;
+  }
+
+  #panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--borde);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 1000;
+  }
+
+  #panel h1 {
+    font-size: 16px;
+    margin: 0;
+    white-space: nowrap;
+    color: #222;
+  }
+
+  .filtro-grupo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #444;
+  }
+
+  .filtro-grupo label {
+    font-weight: 600;
+  }
+
+  select {
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--borde);
+    font-size: 13px;
+  }
+
+  #contadores {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+
+  .contador {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #f0f0f0;
+    white-space: nowrap;
+  }
+
+  .contador .punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  #estado-carga {
+    font-size: 12px;
+    color: #888;
+    padding: 4px 16px;
+  }
+
+  #panel-busqueda {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #f8f9fb;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  #busqueda-zona {
+    flex: 1;
+    max-width: 480px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--borde);
+    font-size: 13px;
+  }
+
+  #btn-buscar-zona {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    background: var(--azul);
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  #btn-buscar-zona:disabled {
+    background: #9fb8d6;
+    cursor: not-allowed;
+  }
+
+  #estado-busqueda {
+    font-size: 12px;
+    color: #555;
+  }
+
+  #mapa {
+    width: 100%;
+    height: calc(100% - 90px);
+  }
+
+  .popup-lugar {
+    font-size: 13px;
+    line-height: 1.5;
+    min-width: 180px;
+  }
+
+  .popup-lugar h3 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+  }
+
+  .popup-lugar .badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .popup-lugar .notas {
+    margin-top: 4px;
+    color: #555;
+    font-style: italic;
+    word-break: break-word;
+  }
+
+  .popup-lugar .notas a {
+    color: var(--azul);
+  }
+
+  .popup-lugar .cambiar-estado {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .popup-lugar .cambiar-estado select {
+    padding: 3px 6px;
+    border-radius: 5px;
+    border: 1px solid var(--borde);
+    font-size: 12px;
+  }
+
+  .popup-lugar .cambiar-estado button {
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: none;
+    background: var(--azul);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .popup-lugar .estado-guardado {
+    font-size: 11px;
+    color: #555;
+    width: 100%;
+  }
+
+  .etiqueta-malvinas {
+    font-size: 11px;
+    font-weight: 700;
+    color: #222;
+    background: rgba(255, 255, 255, 0.88);
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    text-align: center;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <h1>Talleres y casas de repuestos</h1>
+
+  <div class="filtro-grupo">
+    <label for="filtro-zona">Zona</label>
+    <select id="filtro-zona">
+      <option value="todas">Todas</option>
+      <option value="CABA">CABA</option>
+      <option value="GBA">GBA</option>
+      <option value="Interior">Interior</option>
+    </select>
+  </div>
+
+  <div class="filtro-grupo">
+    <label for="filtro-estado">Estado</label>
+    <select id="filtro-estado">
+      <option value="todos">Todos</option>
+      <option value="sin_contactar">Sin contactar</option>
+      <option value="contactado">Contactado</option>
+      <option value="cliente">Cliente</option>
+    </select>
+  </div>
+
+  <div id="contadores"></div>
+</div>
+
+<div id="panel-busqueda">
+  <input type="text" id="busqueda-zona" placeholder="Ej: casas de repuestos en Warnes, CABA, Argentina">
+  <button id="btn-buscar-zona">Buscar zona</button>
+  <span id="estado-busqueda"></span>
+</div>
+
+<div id="estado-carga"></div>
+<div id="mapa"></div>
+
+<script>
+  // =========================================================
+  // CONFIGURACIÓN: reemplazar por la URL de tu Web App de Apps Script
+  // (ver README.md para cómo obtenerla)
+  // =========================================================
+  var URL_WEB_APP = 'https://script.google.com/macros/s/AKfycbx_YR4g38IwioW-IqYzvvmIQT6JEhazNNjHbUecQp65kQgOu4uwwTWE9gJrcROYsmoL/exec';
+
+  // Colores según estado_contacto. Las claves están normalizadas
+  // (minúsculas, espacios reemplazados por "_") para tolerar variaciones
+  // como "Sin Contactar", "sin contactar", etc.
+  var COLOR_POR_ESTADO = {
+    sin_contactar: '#9e9e9e', // gris
+    contactado: '#fbc02d',    // amarillo
+    cliente: '#43a047'        // verde
+  };
+  var COLOR_DEFECTO = '#1565c0'; // azul, para estados no reconocidos
+
+  var ETIQUETA_POR_ESTADO = {
+    sin_contactar: 'Sin contactar',
+    contactado: 'Contactado',
+    cliente: 'Cliente'
+  };
+
+  function normalizarEstado(estado) {
+    if (!estado) return 'sin_contactar';
+    return String(estado)
+      .trim()
+      .toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '') // sacar acentos
+      .replace(/\s+/g, '_');
+  }
+
+  function normalizarZona(zona) {
+    var z = String(zona || '').trim().toLowerCase();
+    if (z === 'caba') return 'CABA';
+    if (z === 'gba') return 'GBA';
+    if (z.indexOf('interior') !== -1) return 'Interior';
+    return zona || 'Sin definir';
+  }
+
+  // ---- Mapa base, centrado en Argentina ----
+  var mapa = L.map('mapa').setView([-38.4161, -63.6167], 5);
+
+  // Mapa base "Argenmap" del Instituto Geográfico Nacional (IGN) de
+  // Argentina — cartografía oficial argentina, gratuita y sin API key.
+  // A diferencia de las tiles públicas de OSM, rotula correctamente el
+  // territorio nacional (ej. Islas Malvinas en lugar de su nombre en inglés).
+  L.tileLayer('https://wms.ign.gob.ar/geoserver/gwc/service/tms/1.0.0/capabaseargenmap@EPSG%3A3857@png/{z}/{x}/{-y}.png', {
+    minZoom: 3,
+    maxZoom: 18,
+    attribution: '<a href="https://www.ign.gob.ar/AreaServicios/Argenmap/IntroduccionV2" target="_blank">Instituto Geográfico Nacional</a> + <a href="https://www.osm.org/copyright" target="_blank">OpenStreetMap</a>'
+  }).addTo(mapa);
+
+  var capaMarcadores = L.layerGroup().addTo(mapa);
+  var todosLosLugares = [];
+
+  // Cada popup se identifica con un id incremental, para poder ubicar de
+  // vuelta el objeto "lugar" correspondiente al tocar "Guardar" (los
+  // popups de Leaflet son solo HTML, no guardan referencias de JS).
+  var contadorPopup = 0;
+  var lugaresPorPopupId = {};
+
+  function crearMarcador(lugar) {
+    var estadoNorm = normalizarEstado(lugar.estado_contacto);
+    var color = COLOR_POR_ESTADO[estadoNorm] || COLOR_DEFECTO;
+
+    var marcador = L.circleMarker([lugar.latitud, lugar.longitud], {
+      radius: 8,
+      weight: 2,
+      color: '#fff',
+      fillColor: color,
+      fillOpacity: 0.9
+    });
+
+    var etiquetaEstado = ETIQUETA_POR_ESTADO[estadoNorm] || (lugar.estado_contacto || 'Sin definir');
+
+    var idPopup = contadorPopup++;
+    lugaresPorPopupId[idPopup] = lugar;
+
+    var html = '<div class="popup-lugar">'
+      + '<h3>' + escaparHtml(lugar.nombre || 'Sin nombre') + '</h3>'
+      + '<span class="badge" style="background:' + color + '">' + escaparHtml(etiquetaEstado) + '</span><br>'
+      + (lugar.telefono ? '📞 ' + escaparHtml(lugar.telefono) + '<br>' : '')
+      + (lugar.zona ? '📍 ' + escaparHtml(normalizarZona(lugar.zona)) + (lugar.provincia ? ' — ' + escaparHtml(lugar.provincia) : '') + '<br>' : '')
+      + (lugar.direccion ? escaparHtml(lugar.direccion) + '<br>' : '')
+      + (lugar.notas ? '<div class="notas">' + linkificarTexto(lugar.notas) + '</div>' : '')
+      + '<div class="cambiar-estado">'
+      + '<select id="estado-select-' + idPopup + '">'
+      + '<option value="Sin contactar"' + (estadoNorm === 'sin_contactar' ? ' selected' : '') + '>Sin contactar</option>'
+      + '<option value="Contactado"' + (estadoNorm === 'contactado' ? ' selected' : '') + '>Contactado</option>'
+      + '<option value="Cliente"' + (estadoNorm === 'cliente' ? ' selected' : '') + '>Cliente</option>'
+      + '</select>'
+      + '<button onclick="guardarEstado(' + idPopup + ')">Guardar</button>'
+      + '<div id="estado-guardado-' + idPopup + '" class="estado-guardado"></div>'
+      + '</div>'
+      + '</div>';
+
+    marcador.bindPopup(html);
+    return marcador;
+  }
+
+  function escaparHtml(texto) {
+    return String(texto)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // Escapa el texto y convierte cualquier URL suelta (http/https) en un
+  // link clickeable que abre en pestaña nueva — usado para el sitio web
+  // que va pegado al final de las notas.
+  function linkificarTexto(texto) {
+    var escapado = escaparHtml(texto);
+    return escapado.replace(/(https?:\/\/[^\s|]+)/g, function (url) {
+      return '<a href="' + url + '" target="_blank" rel="noopener">' + url + '</a>';
+    });
+  }
+
+  function guardarEstado(idPopup) {
+    var lugar = lugaresPorPopupId[idPopup];
+    var select = document.getElementById('estado-select-' + idPopup);
+    var estadoDiv = document.getElementById('estado-guardado-' + idPopup);
+    var nuevoEstado = select.value;
+
+    estadoDiv.textContent = 'Guardando...';
+
+    var url = URL_WEB_APP + '?action=actualizarEstado'
+      + '&nombre=' + encodeURIComponent(lugar.nombre)
+      + '&direccion=' + encodeURIComponent(lugar.direccion)
+      + '&estado=' + encodeURIComponent(nuevoEstado)
+      + '&t=' + Date.now();
+
+    fetch(url, { cache: 'no-store' })
+      .then(function (respuesta) { return respuesta.json(); })
+      .then(function (resultado) {
+        if (!resultado.ok) throw new Error(resultado.error || 'Error desconocido');
+        estadoDiv.textContent = 'Guardado ✓';
+        cargarDatos(); // refresca colores/contadores con el nuevo estado
+      })
+      .catch(function (error) {
+        estadoDiv.textContent = 'Error: ' + error.message;
+      });
+  }
+
+  function aplicarFiltros() {
+    var zonaSeleccionada = document.getElementById('filtro-zona').value;
+    var estadoSeleccionado = document.getElementById('filtro-estado').value;
+
+    capaMarcadores.clearLayers();
+
+    var visibles = todosLosLugares.filter(function (lugar) {
+      var pasaZona = zonaSeleccionada === 'todas' || normalizarZona(lugar.zona) === zonaSeleccionada;
+      var pasaEstado = estadoSeleccionado === 'todos' || normalizarEstado(lugar.estado_contacto) === estadoSeleccionado;
+      return pasaZona && pasaEstado;
+    });
+
+    visibles.forEach(function (lugar) {
+      if (lugar.latitud && lugar.longitud) {
+        crearMarcador(lugar).addTo(capaMarcadores);
+      }
+    });
+
+    actualizarContadores(visibles);
+  }
+
+  function actualizarContadores(lugares) {
+    var conteos = { sin_contactar: 0, contactado: 0, cliente: 0, otros: 0 };
+
+    lugares.forEach(function (lugar) {
+      var estado = normalizarEstado(lugar.estado_contacto);
+      if (conteos.hasOwnProperty(estado)) {
+        conteos[estado]++;
+      } else {
+        conteos.otros++;
+      }
+    });
+
+    var total = lugares.length;
+    var contenedor = document.getElementById('contadores');
+    contenedor.innerHTML =
+      '<span class="contador"><span class="punto" style="background:' + COLOR_POR_ESTADO.sin_contactar + '"></span>Sin contactar: ' + conteos.sin_contactar + '</span>' +
+      '<span class="contador"><span class="punto" style="background:' + COLOR_POR_ESTADO.contactado + '"></span>Contactado: ' + conteos.contactado + '</span>' +
+      '<span class="contador"><span class="punto" style="background:' + COLOR_POR_ESTADO.cliente + '"></span>Cliente: ' + conteos.cliente + '</span>' +
+      '<span class="contador"><strong>Total: ' + total + '</strong></span>';
+  }
+
+  function cargarDatos() {
+    var estadoCarga = document.getElementById('estado-carga');
+    estadoCarga.textContent = 'Cargando lugares...';
+
+    // cache: 'no-store' + parámetro de tiempo, para no traer una respuesta
+    // vieja del navegador justo después de cargar datos nuevos.
+    fetch(URL_WEB_APP + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (respuesta) {
+        if (!respuesta.ok) throw new Error('HTTP ' + respuesta.status);
+        return respuesta.json();
+      })
+      .then(function (datos) {
+        todosLosLugares = datos;
+        var sinCoordenadas = datos.filter(function (l) { return !l.latitud || !l.longitud; }).length;
+
+        estadoCarga.textContent = 'Cargados ' + datos.length + ' lugares.' +
+          (sinCoordenadas > 0 ? ' (' + sinCoordenadas + ' sin coordenadas todavía — correr el geocoding en el Sheet)' : '');
+
+        aplicarFiltros();
+      })
+      .catch(function (error) {
+        estadoCarga.textContent = 'Error cargando datos: ' + error.message + '. Revisá URL_WEB_APP en mapa.html.';
+      });
+  }
+
+  function buscarZona() {
+    var input = document.getElementById('busqueda-zona');
+    var boton = document.getElementById('btn-buscar-zona');
+    var estadoBusqueda = document.getElementById('estado-busqueda');
+
+    var consulta = input.value.trim();
+    if (!consulta) {
+      estadoBusqueda.textContent = 'Escribí una zona para buscar.';
+      return;
+    }
+
+    boton.disabled = true;
+    input.disabled = true;
+    estadoBusqueda.textContent = 'Buscando (puede tardar 30-60 seg, verifica cada sitio web)...';
+
+    var url = URL_WEB_APP + '?action=buscar&query=' + encodeURIComponent(consulta) + '&t=' + Date.now();
+
+    fetch(url, { cache: 'no-store' })
+      .then(function (respuesta) {
+        if (!respuesta.ok) throw new Error('HTTP ' + respuesta.status);
+        return respuesta.json();
+      })
+      .then(function (resultado) {
+        if (!resultado.ok) throw new Error(resultado.error || 'Error desconocido');
+
+        estadoBusqueda.textContent = 'Encontrados: ' + resultado.encontrados +
+          ' | Nuevos: ' + resultado.nuevos +
+          ' | Duplicados: ' + resultado.duplicados +
+          ' | Verificados: ' + resultado.verificados +
+          ' | Para revisar: ' + resultado.paraRevisar;
+
+        cargarDatos(); // refresca los pines con lo recién agregado
+      })
+      .catch(function (error) {
+        estadoBusqueda.textContent = 'Error: ' + error.message;
+      })
+      .finally(function () {
+        boton.disabled = false;
+        input.disabled = false;
+      });
+  }
+
+  document.getElementById('filtro-zona').addEventListener('change', aplicarFiltros);
+  document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
+  document.getElementById('btn-buscar-zona').addEventListener('click', buscarZona);
+  document.getElementById('busqueda-zona').addEventListener('keydown', function (evento) {
+    if (evento.key === 'Enter') buscarZona();
+  });
+
+  cargarDatos();
+</script>
+
+</body>
+</html>

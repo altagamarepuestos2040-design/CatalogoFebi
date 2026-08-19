@@ -86,6 +86,22 @@ tr:hover td{background:#FAFAFA}
 .tipo-select{padding:4px 8px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:inherit;cursor:pointer;outline:none}
 .empty-state{padding:60px;text-align:center;color:var(--text3);font-size:14px}
 
+/* CONFIG */
+.config-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:520px}
+.config-section h3{font-size:17px;font-weight:800;margin-bottom:6px}
+.config-section p{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6}
+.config-field{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
+.config-field label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text2)}
+.config-input-row{display:flex;gap:10px;align-items:center}
+.config-currency-sign{font-size:16px;font-weight:700;color:var(--text2);width:12px;text-align:center}
+.config-input{padding:11px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:inherit;font-size:16px;font-weight:700;width:160px;outline:none;transition:border-color .2s}
+.config-input:focus{border-color:var(--red)}
+.config-input-hint{font-size:12px;color:var(--text3)}
+.config-save-btn{padding:12px 28px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;transition:background .2s}
+.config-save-btn:hover{background:var(--red-dark)}
+.config-save-btn:disabled{opacity:.6;cursor:not-allowed}
+.config-success{font-size:13px;color:#166534;background:#E6F4EA;border:1px solid #BBF7D0;padding:10px 14px;border-radius:8px;display:none;margin-top:14px}
+
 @media(max-width:768px){
   .nav{padding:0 16px}
   .main{padding:20px 12px}
@@ -116,6 +132,8 @@ tr:hover td{background:#FAFAFA}
       <span class="admin-badge">ADMIN</span>
     </div>
     <div class="nav-right">
+      <a class="btn-sm" style="display:inline-block;text-decoration:none" href="mapa-talleres/mapa.html" target="_blank" rel="noopener">🗺️ Mapa Talleres</a>
+      <a class="btn-sm" style="display:inline-block;text-decoration:none" href="mapa-talleres/mapa-mineria.html" target="_blank" rel="noopener">⛏️ Mapa Minería/Petróleo</a>
       <span id="adminUserLabel" style="font-size:13px;color:var(--text2)"></span>
       <button class="btn-sm" onclick="doAdminLogout()">Cerrar sesión</button>
     </div>
@@ -138,7 +156,9 @@ tr:hover td{background:#FAFAFA}
     <!-- TABS -->
     <div class="tabs">
       <button class="tab active" onclick="switchTab('pedidos',this)">Pedidos</button>
+      <button class="tab" onclick="switchTab('stock',this)">Stock</button>
       <button class="tab" onclick="switchTab('clientes',this)">Clientes</button>
+      <button class="tab" onclick="switchTab('config',this)">⚙ Configuración</button>
     </div>
 
     <!-- PEDIDOS -->
@@ -163,18 +183,68 @@ tr:hover td{background:#FAFAFA}
       </div>
     </div>
 
+    <!-- STOCK -->
+    <div id="tabStock" style="display:none">
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <input class="search-input" id="searchStock" placeholder="Buscar por SKU, descripción o número de pieza..." oninput="filterStock()">
+          <select class="estado-select" id="filterStockEstado" onchange="filterStock()">
+            <option value="">Todos los estados</option>
+            <option value="activo">Activo</option>
+            <option value="obsoleto">Obsoleto</option>
+          </select>
+          <span id="stockCount" style="font-size:12px;color:var(--text2)"></span>
+          <button class="btn-sm btn-red" style="margin-left:auto" onclick="openArticuloModal()">+ Nuevo artículo</button>
+        </div>
+        <table>
+          <thead><tr>
+            <th>SKU</th><th>Descripción</th><th>N° de pieza</th><th>Tipo</th><th>Stock</th><th>Comprom.</th><th>Disponible</th><th>Estado</th>
+          </tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- CLIENTES -->
     <div id="tabClientes" style="display:none">
       <div class="table-wrap">
         <div class="table-toolbar">
-          <input class="search-input" id="searchClientes" placeholder="Buscar cliente..." oninput="filterClientes()">
+          <input class="search-input" id="searchClientes" placeholder="Buscar por nombre, teléfono o CUIT/DNI..." oninput="filterClientes()">
+          <span id="clientesCount" style="font-size:12px;color:var(--text2)"></span>
+          <button class="btn-sm btn-red" style="margin-left:auto" onclick="openClienteModal()">+ Nuevo cliente</button>
         </div>
         <table>
           <thead><tr>
-            <th>#</th><th>Nombre</th><th>Empresa</th><th>Teléfono</th><th>Pedidos</th><th>Total comprado</th>
+            <th>#</th><th>Nombre</th><th>CUIT/DNI</th><th>Teléfono</th><th>Email</th><th>Origen</th>
           </tr></thead>
           <tbody id="clientesBody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- CONFIGURACIÓN -->
+    <div id="tabConfig" style="display:none">
+      <div class="config-section">
+        <h3>Tipos de cambio</h3>
+        <p>Definí cuántos pesos vale un dólar y un euro. El catálogo muestra los precios en ARS, USD y EUR usando estos valores. Los clientes pueden elegir la moneda con el selector en el catálogo.</p>
+        <div class="config-field">
+          <label>1 USD = cuántos pesos argentinos</label>
+          <div class="config-input-row">
+            <span class="config-currency-sign">$</span>
+            <input type="number" id="cfg-usd" class="config-input" min="1" step="1" placeholder="1300">
+            <span class="config-input-hint">pesos por dólar</span>
+          </div>
+        </div>
+        <div class="config-field">
+          <label>1 EUR = cuántos pesos argentinos</label>
+          <div class="config-input-row">
+            <span class="config-currency-sign">$</span>
+            <input type="number" id="cfg-eur" class="config-input" min="1" step="1" placeholder="1420">
+            <span class="config-input-hint">pesos por euro</span>
+          </div>
+        </div>
+        <button class="config-save-btn" id="cfg-save-btn" onclick="saveConfig()">Guardar tipos de cambio</button>
+        <div class="config-success" id="cfg-success">✅ Tipos de cambio guardados correctamente</div>
       </div>
     </div>
   </div>
@@ -189,11 +259,57 @@ tr:hover td{background:#FAFAFA}
   </div>
 </div>
 
+<!-- NUEVO ARTÍCULO MODAL -->
+<div class="modal-overlay" id="articuloModal">
+  <div class="modal-box">
+    <h4>Nuevo artículo</h4>
+    <div class="err-msg" id="articuloErr"></div>
+    <div class="field"><label>SKU *</label><input id="art-sku" placeholder="Ej: 01107"></div>
+    <div class="field"><label>Descripción *</label><input id="art-desc" placeholder="Ej: Soportes de motor"></div>
+    <div class="field"><label>N° de pieza / referencia cruzada</label><input id="art-desc2" placeholder="Números OE, marca..."></div>
+    <div class="field"><label>Tipo</label><input id="art-tipo" placeholder="Nacional, importado, Kits A ML..."></div>
+    <div class="field"><label>Estado</label>
+      <select class="estado-select" id="art-estado" style="width:100%;padding:10px 13px">
+        <option value="activo">Activo</option>
+        <option value="obsoleto">Obsoleto</option>
+      </select>
+    </div>
+    <div class="field"><label>Stock</label><input id="art-stock" type="number" step="1" value="0"></div>
+    <div class="field"><label>Comprometido</label><input id="art-comprometido" type="number" step="1" value="0"></div>
+    <button class="modal-close-btn" onclick="saveArticulo()">Guardar artículo</button>
+    <button class="modal-close-btn" style="background:none;color:var(--text2);border:1px solid var(--border);margin-top:8px" onclick="closeArticuloModal()">Cancelar</button>
+  </div>
+</div>
+
+<!-- NUEVO CLIENTE MODAL -->
+<div class="modal-overlay" id="clienteModal">
+  <div class="modal-box">
+    <h4>Nuevo cliente</h4>
+    <div class="err-msg" id="clienteErr"></div>
+    <div class="field"><label>Nombre *</label><input id="cli-nombre" placeholder="Nombre o razón social"></div>
+    <div class="field"><label>CUIT / DNI</label><input id="cli-cuit"></div>
+    <div class="field"><label>Teléfono</label><input id="cli-tel"></div>
+    <div class="field"><label>Teléfono alternativo</label><input id="cli-tel2"></div>
+    <div class="field"><label>Email</label><input id="cli-email" type="email"></div>
+    <div class="field"><label>Dirección</label><input id="cli-dir"></div>
+    <button class="modal-close-btn" onclick="saveCliente()">Guardar cliente</button>
+    <button class="modal-close-btn" style="background:none;color:var(--text2);border:1px solid var(--border);margin-top:8px" onclick="closeClienteModal()">Cancelar</button>
+  </div>
+</div>
+
 <script>
 const SB_URL  = 'https://psdrpdtvokvylupouyhs.supabase.co';
 const SB_ANON = 'sb_publishable_y-kO0f1jtl1uDdX2Hpw2YA_HjDUd78R';
 let adminToken = null;
 let allPedidos = [];
+let allArticulos = [];
+let allClientes = [];
+
+function esc(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
 
 async function doAdminLogin(){
   const email = document.getElementById('adminEmail').value.trim();
@@ -216,7 +332,7 @@ async function doAdminLogin(){
       document.getElementById('adminUserLabel').textContent = email;
       loadAll();
     } else {
-      err.textContent = 'Email o contraseña incorrectos';
+      err.textContent = data.error_description || data.msg || data.error || 'Email o contraseña incorrectos';
       err.style.display='block';
     }
   } catch(e){
@@ -232,7 +348,7 @@ function doAdminLogout(){
 }
 
 async function loadAll(){
-  await loadPedidos();
+  await Promise.all([loadPedidos(), loadStock(), loadClientesReal()]);
 }
 
 async function loadPedidos(){
@@ -243,7 +359,6 @@ async function loadPedidos(){
     allPedidos = await res.json();
     updateStats();
     filterPedidos();
-    buildClientes();
   } catch(e){ console.error(e); }
 }
 
@@ -329,38 +444,246 @@ async function updateEstado(id, estado){
   updateStats();
 }
 
-function buildClientes(){
-  const map = {};
-  allPedidos.forEach(p=>{
-    const key = p.cliente_tel||p.cliente_nombre;
-    if(!map[key]) map[key]={nombre:p.cliente_nombre,empresa:p.cliente_empresa,tel:p.cliente_tel,pedidos:0,total:0};
-    map[key].pedidos++;
-    map[key].total += (p.total||0);
+async function loadStock(){
+  const body = document.getElementById('stockBody');
+  try {
+    const res = await fetch(SB_URL+'/rest/v1/articulos?order=descripcion.asc',{
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+adminToken}
+    });
+    if(!res.ok){
+      allArticulos = [];
+      body.innerHTML = '<tr><td colspan="8" class="empty-state">No se pudo leer la tabla "articulos". ¿Ya corriste supabase_stock.sql en Supabase?</td></tr>';
+      document.getElementById('stockCount').textContent = '';
+      return;
+    }
+    allArticulos = await res.json();
+    filterStock();
+  } catch(e){
+    allArticulos = [];
+    body.innerHTML = '<tr><td colspan="8" class="empty-state">Error de conexión al cargar el stock.</td></tr>';
+  }
+}
+
+function filterStock(){
+  const q = (document.getElementById('searchStock').value||'').toLowerCase();
+  const est = document.getElementById('filterStockEstado').value;
+  const list = allArticulos.filter(a=>{
+    const matchQ = !q || (a.sku&&a.sku.toLowerCase().includes(q)) || (a.descripcion&&a.descripcion.toLowerCase().includes(q)) || (a.descripcion_2&&a.descripcion_2.toLowerCase().includes(q));
+    const matchE = !est || a.estado===est;
+    return matchQ && matchE;
   });
-  window._clientesData = Object.values(map);
-  filterClientes();
+  renderStock(list);
+}
+
+function renderStock(list){
+  const body = document.getElementById('stockBody');
+  document.getElementById('stockCount').textContent = list.length + ' artículo(s)';
+  if(!list.length){ body.innerHTML='<tr><td colspan="8" class="empty-state">Sin artículos cargados todavía</td></tr>'; return; }
+  body.innerHTML = list.map(a=>{
+    const disponible = a.disponible!=null ? a.disponible : (a.stock||0)-(a.comprometido||0);
+    return `<tr>
+      <td><strong>${esc(a.sku)}</strong></td>
+      <td>${esc(a.descripcion)}</td>
+      <td style="font-size:12px;color:var(--text2)">${esc(a.descripcion_2)||'—'}</td>
+      <td style="font-size:12px">${esc(a.tipo)||'—'}</td>
+      <td>${a.stock??0}</td>
+      <td>${a.comprometido??0}</td>
+      <td><strong>${disponible}</strong></td>
+      <td>
+        <select class="estado-select" onchange="updateArticuloEstado('${esc(a.sku)}',this.value)">
+          <option value="activo" ${a.estado==='activo'?'selected':''}>Activo</option>
+          <option value="obsoleto" ${a.estado==='obsoleto'?'selected':''}>Obsoleto</option>
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openArticuloModal(){
+  document.getElementById('articuloErr').style.display='none';
+  ['art-sku','art-desc','art-desc2','art-tipo'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('art-estado').value='activo';
+  document.getElementById('art-stock').value=0;
+  document.getElementById('art-comprometido').value=0;
+  document.getElementById('articuloModal').classList.add('open');
+}
+function closeArticuloModal(){ document.getElementById('articuloModal').classList.remove('open'); }
+
+async function saveArticulo(){
+  const err = document.getElementById('articuloErr');
+  err.style.display='none';
+  const sku = document.getElementById('art-sku').value.trim();
+  const descripcion = document.getElementById('art-desc').value.trim();
+  if(!sku || !descripcion){ err.textContent='SKU y descripción son obligatorios'; err.style.display='block'; return; }
+  const payload = {
+    sku,
+    descripcion,
+    descripcion_2: document.getElementById('art-desc2').value.trim() || null,
+    tipo: document.getElementById('art-tipo').value.trim() || null,
+    estado: document.getElementById('art-estado').value,
+    stock: Number(document.getElementById('art-stock').value)||0,
+    comprometido: Number(document.getElementById('art-comprometido').value)||0
+  };
+  try {
+    const res = await fetch(SB_URL+'/rest/v1/articulos',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_ANON,'Authorization':'Bearer '+adminToken,'Prefer':'return=minimal'},
+      body: JSON.stringify(payload)
+    });
+    if(res.ok||res.status===201||res.status===204){
+      closeArticuloModal();
+      loadStock();
+    } else {
+      err.textContent = 'No se pudo guardar (¿el SKU ya existe?)'; err.style.display='block';
+    }
+  } catch(e){ err.textContent='Error de conexión'; err.style.display='block'; }
+}
+
+async function updateArticuloEstado(sku, estado){
+  await fetch(SB_URL+'/rest/v1/articulos?sku=eq.'+encodeURIComponent(sku),{
+    method:'PATCH',
+    headers:{'Content-Type':'application/json','apikey':SB_ANON,'Authorization':'Bearer '+adminToken,'Prefer':'return=minimal'},
+    body: JSON.stringify({estado})
+  });
+  const a = allArticulos.find(x=>x.sku===sku);
+  if(a) a.estado = estado;
+}
+
+async function loadClientesReal(){
+  const body = document.getElementById('clientesBody');
+  try {
+    const res = await fetch(SB_URL+'/rest/v1/clientes?order=nombre.asc',{
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+adminToken}
+    });
+    if(!res.ok){
+      allClientes = [];
+      body.innerHTML = '<tr><td colspan="6" class="empty-state">No se pudo leer la tabla "clientes". ¿Ya corriste supabase_clientes.sql en Supabase?</td></tr>';
+      document.getElementById('clientesCount').textContent = '';
+      return;
+    }
+    allClientes = await res.json();
+    filterClientes();
+  } catch(e){
+    allClientes = [];
+    body.innerHTML = '<tr><td colspan="6" class="empty-state">Error de conexión al cargar clientes.</td></tr>';
+  }
 }
 
 function filterClientes(){
-  const q = document.getElementById('searchClientes').value.toLowerCase();
-  const list = (window._clientesData||[]).filter(c=>!q||(c.nombre&&c.nombre.toLowerCase().includes(q))||(c.empresa&&c.empresa.toLowerCase().includes(q)));
+  const q = (document.getElementById('searchClientes').value||'').toLowerCase();
+  const list = allClientes.filter(c=>!q
+    || (c.nombre&&c.nombre.toLowerCase().includes(q))
+    || (c.telefono&&c.telefono.includes(q))
+    || (c.cuit_dni&&c.cuit_dni.includes(q)));
+  renderClientes(list);
+}
+
+function renderClientes(list){
   const body = document.getElementById('clientesBody');
-  if(!list.length){ body.innerHTML='<tr><td colspan="6" class="empty-state">Sin clientes</td></tr>'; return; }
+  document.getElementById('clientesCount').textContent = list.length + ' cliente(s)';
+  if(!list.length){ body.innerHTML='<tr><td colspan="6" class="empty-state">Sin clientes cargados todavía</td></tr>'; return; }
   body.innerHTML = list.map((c,i)=>`<tr>
     <td>${i+1}</td>
-    <td><strong>${c.nombre||'—'}</strong></td>
-    <td>${c.empresa||'—'}</td>
-    <td>${c.tel||'—'}</td>
-    <td><strong>${c.pedidos}</strong></td>
-    <td><strong>$${c.total.toLocaleString('es-AR')}</strong></td>
+    <td><strong>${esc(c.nombre)}</strong></td>
+    <td>${esc(c.cuit_dni)||'—'}</td>
+    <td>${esc(c.telefono)||'—'}</td>
+    <td style="font-size:12px">${esc(c.email)||'—'}</td>
+    <td style="font-size:12px;color:var(--text2)">${esc(c.origen)||'—'}</td>
   </tr>`).join('');
+}
+
+function openClienteModal(){
+  document.getElementById('clienteErr').style.display='none';
+  ['cli-nombre','cli-cuit','cli-tel','cli-tel2','cli-email','cli-dir'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('clienteModal').classList.add('open');
+}
+function closeClienteModal(){ document.getElementById('clienteModal').classList.remove('open'); }
+
+async function saveCliente(){
+  const err = document.getElementById('clienteErr');
+  err.style.display='none';
+  const nombre = document.getElementById('cli-nombre').value.trim();
+  if(!nombre){ err.textContent='El nombre es obligatorio'; err.style.display='block'; return; }
+  const payload = {
+    nombre,
+    cuit_dni: document.getElementById('cli-cuit').value.trim() || null,
+    telefono: document.getElementById('cli-tel').value.trim() || null,
+    telefono_alt: document.getElementById('cli-tel2').value.trim() || null,
+    email: document.getElementById('cli-email').value.trim() || null,
+    direccion: document.getElementById('cli-dir').value.trim() || null,
+    origen: 'nuevo'
+  };
+  try {
+    const res = await fetch(SB_URL+'/rest/v1/clientes',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_ANON,'Authorization':'Bearer '+adminToken,'Prefer':'return=minimal'},
+      body: JSON.stringify(payload)
+    });
+    if(res.ok||res.status===201||res.status===204){
+      closeClienteModal();
+      loadClientesReal();
+    } else {
+      err.textContent = 'No se pudo guardar el cliente'; err.style.display='block';
+    }
+  } catch(e){ err.textContent='Error de conexión'; err.style.display='block'; }
 }
 
 function switchTab(tab, btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('tabPedidos').style.display = tab==='pedidos'?'block':'none';
+  document.getElementById('tabStock').style.display = tab==='stock'?'block':'none';
   document.getElementById('tabClientes').style.display = tab==='clientes'?'block':'none';
+  document.getElementById('tabConfig').style.display = tab==='config'?'block':'none';
+  if(tab==='config') loadConfig();
+}
+
+async function loadConfig(){
+  try {
+    var res = await fetch(SB_URL+'/rest/v1/configuracion?select=clave,valor',{
+      headers:{'apikey':SB_ANON,'Authorization':'Bearer '+adminToken}
+    });
+    if(!res.ok) return;
+    var rows = await res.json();
+    if(!Array.isArray(rows)) return;
+    rows.forEach(function(r){
+      if(r.clave==='tipo_cambio_usd'){ var el=document.getElementById('cfg-usd'); if(el) el.value=r.valor; }
+      if(r.clave==='tipo_cambio_eur'){ var el=document.getElementById('cfg-eur'); if(el) el.value=r.valor; }
+    });
+  } catch(e){}
+}
+
+async function saveConfig(){
+  var usdEl = document.getElementById('cfg-usd');
+  var eurEl = document.getElementById('cfg-eur');
+  var btn   = document.getElementById('cfg-save-btn');
+  var usd = parseFloat(usdEl.value);
+  var eur = parseFloat(eurEl.value);
+  if(isNaN(usd)||usd<=0||isNaN(eur)||eur<=0){ alert('Ingresá valores válidos mayores a cero'); return; }
+  btn.textContent='Guardando...'; btn.disabled=true;
+  var now = new Date().toISOString();
+  try {
+    var res = await fetch(SB_URL+'/rest/v1/configuracion',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'apikey':SB_ANON,
+        'Authorization':'Bearer '+adminToken,
+        'Prefer':'resolution=merge-duplicates,return=minimal'
+      },
+      body: JSON.stringify([
+        {clave:'tipo_cambio_usd', valor:String(usd), updated_at:now},
+        {clave:'tipo_cambio_eur', valor:String(eur), updated_at:now}
+      ])
+    });
+    var s = document.getElementById('cfg-success');
+    if(res.ok||res.status===204){
+      if(s){ s.style.display='block'; setTimeout(function(){ s.style.display='none'; }, 3500); }
+    } else {
+      alert('Error al guardar ('+res.status+'). La tabla puede no estar creada aún en Supabase.');
+    }
+  } catch(e){ alert('Error de conexión al guardar.'); }
+  btn.textContent='Guardar tipos de cambio'; btn.disabled=false;
 }
 </script>
 </body>
